@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Ultimate Cheat Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Clash+Display:wght@400;500;600;700&family=Bricolage+Grotesque:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06090f;
+    --surface: #0d1117;
+    --surface2: #151c27;
+    --border: #1e2a3a;
+    --accent: #7c6af7;
+    --accent2: #38bdf8;
+    --accent3: #4ade80;
+    --accent4: #fb923c;
+    --accent5: #f472b6;
+    --accent6: #facc15;
+    --text: #dde4ee;
+    --muted: #6b7a92;
+    --code-bg: #080c12;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Bricolage Grotesque', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 4rem 2rem;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 30% 50%, rgba(124,106,247,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 60% at 75% 30%, rgba(56,189,248,0.1) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 60% 80%, rgba(74,222,128,0.07) 0%, transparent 60%),
+      var(--bg);
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(124,106,247,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(124,106,247,0.4);
+    padding: 0.35rem 1.2rem;
+    display: inline-block;
+    background: rgba(124,106,247,0.08);
+  }
+  .hero h1 {
+    font-size: clamp(4rem, 11vw, 9rem);
+    font-weight: 800;
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+    margin-bottom: 2rem;
+  }
+  .hero h1 .c1 { color: var(--accent); }
+  .hero h1 .c2 { color: var(--accent2); }
+  .hero h1 .c3 { color: var(--accent3); }
+  .hero-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.9;
+    max-width: 520px;
+  }
+  .scroll-hint {
+    position: absolute; bottom: 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.25em;
+    animation: bob 2s ease-in-out infinite;
+  }
+  @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
+
+  /* NAV */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(6,9,15,0.94);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.8rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    overflow-x: auto;
+  }
+  .nav-brand { font-weight: 800; font-size: 1rem; color: var(--accent); white-space: nowrap; }
+  .nav a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-decoration: none;
+    white-space: nowrap;
+    letter-spacing: 0.1em;
+    transition: color 0.2s;
+  }
+  .nav a:hover { color: var(--accent2); }
+
+  /* LAYOUT */
+  .container { max-width: 1420px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 5rem 0; border-top: 1px solid var(--border); }
+  .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; }
+  .section-num { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--accent); letter-spacing: 0.2em; }
+  .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; }
+  .section-title span { color: var(--accent2); }
+
+  .grid { display: grid; gap: 1.5rem; }
+  .grid-2 { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.75rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(124,106,247,0.15), 0 8px 30px rgba(0,0,0,0.4); }
+  .ca  { border-top: 2px solid var(--accent); }
+  .ca2 { border-top: 2px solid var(--accent2); }
+  .ca3 { border-top: 2px solid var(--accent3); }
+  .ca4 { border-top: 2px solid var(--accent4); }
+  .ca5 { border-top: 2px solid var(--accent5); }
+  .ca6 { border-top: 2px solid var(--accent6); }
+
+  .card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+  .card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.01em; }
+
+  /* CODE */
+  code, pre { font-family: 'DM Mono', monospace; }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    line-height: 1.75;
+    margin: 0.75rem 0 0;
+    font-size: 0.78rem;
+  }
+  .prop { color: var(--accent2); }
+  .val  { color: var(--accent3); }
+  .sel  { color: var(--accent5); }
+  .com  { color: var(--muted); font-style: italic; }
+  .num  { color: var(--accent4); }
+  .key  { color: var(--accent); }
+  .unit { color: var(--accent6); }
+  .txt  { color: var(--text); }
+
+  .ic {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 0.1em 0.4em;
+    border-radius: 2px;
+    color: var(--accent2);
+  }
+
+  /* TABLE */
+  .ct { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 0.82rem; }
+  .ct th {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .ct td { padding: 0.45rem 0.6rem; border-bottom: 1px solid rgba(30,42,58,0.6); vertical-align: top; }
+  .ct td:first-child { font-family: 'DM Mono', monospace; color: var(--accent2); font-size: 0.78rem; }
+  .ct td:last-child { color: var(--muted); font-size: 0.78rem; }
+  .ct tr:last-child td { border-bottom: none; }
+
+  /* BADGE */
+  .badge { display: inline-block; font-family: 'DM Mono', monospace; font-size: 0.63rem; padding: 0.2em 0.55em; border-radius: 2px; margin: 0.15rem; }
+  .bv { background: rgba(124,106,247,0.12); color: var(--accent); border: 1px solid rgba(124,106,247,0.3); }
+  .bb { background: rgba(56,189,248,0.1); color: var(--accent2); border: 1px solid rgba(56,189,248,0.3); }
+  .bg { background: rgba(74,222,128,0.1); color: var(--accent3); border: 1px solid rgba(74,222,128,0.3); }
+  .bo { background: rgba(251,146,60,0.1); color: var(--accent4); border: 1px solid rgba(251,146,60,0.3); }
+  .bp { background: rgba(244,114,182,0.1); color: var(--accent5); border: 1px solid rgba(244,114,182,0.3); }
+
+  hr.div { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
+
+  /* VISUAL DEMOS */
+  .demo {
+    background: var(--surface2);
+    border: 1px dashed var(--border);
+    border-radius: 3px;
+    padding: 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  /* BOX MODEL VIZ */
+  .box-model {
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem; margin-top: 0.75rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+  }
+  .bm-margin { background: rgba(124,106,247,0.08); border: 1px dashed var(--accent); padding: 12px; text-align:center; color: var(--accent); }
+  .bm-border { background: rgba(56,189,248,0.08); border: 1px solid var(--accent2); padding: 10px; color: var(--accent2); }
+  .bm-padding { background: rgba(74,222,128,0.08); border: 1px solid var(--accent3); padding: 10px; color: var(--accent3); }
+  .bm-content { background: rgba(251,146,60,0.08); border: 1px solid var(--accent4); padding: 14px 20px; color: var(--accent4); text-align:center; }
+
+  /* SPECIFICITY VIZ */
+  .spec-bar { display: flex; gap: 0.75rem; margin-top: 0.75rem; align-items: flex-end; }
+  .spec-col { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+  .spec-block { width: 50px; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 700; }
+  .spec-lbl { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); text-align:center; }
+  .spec-score { font-family: 'DM Mono', monospace; font-size: 0.7rem; margin-top: 0.25rem; }
+
+  /* FLEXBOX VIZ */
+  .flex-demo { display: flex; gap: 6px; padding: 8px; background: var(--code-bg); border: 1px solid var(--border); border-radius: 2px; margin: 0.5rem 0; min-height: 50px; }
+  .flex-item { background: rgba(124,106,247,0.25); border: 1px solid var(--accent); border-radius: 2px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--accent); }
+  .flex-item.grow { flex: 1; }
+
+  /* GRID VIZ */
+  .grid-demo { display: grid; gap: 6px; padding: 8px; background: var(--code-bg); border: 1px solid var(--border); border-radius: 2px; margin: 0.5rem 0; }
+  .grid-item { background: rgba(56,189,248,0.15); border: 1px solid var(--accent2); border-radius: 2px; padding: 6px; font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--accent2); text-align:center; }
+  .gi-span2 { grid-column: span 2; }
+
+  /* COLOR SWATCHES */
+  .swatches { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+  .swatch { width: 40px; height: 40px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.1); position: relative; cursor: default; }
+  .swatch::after { content: attr(data-name); position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-family: 'DM Mono', monospace; font-size: 0.55rem; color: var(--muted); white-space: nowrap; }
+  .swatches-wrap { margin-bottom: 1rem; }
+
+  /* TRANSITION DEMO */
+  .t-demo {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0.5rem 1.25rem;
+    background: rgba(124,106,247,0.15);
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    transition: all 0.3s ease;
+    cursor: default;
+    margin: 0.5rem 0;
+  }
+  .t-demo:hover { background: var(--accent); color: white; transform: scale(1.05); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+  footer span { color: var(--accent); }
+
+  .full { grid-column: 1 / -1; }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Ultimate Reference</div>
+    <h1><span class="c1">C</span><span class="c2">S</span><span class="c3">S</span><br>Cheat<br>Sheet</h1>
+    <p class="hero-sub">Selectors · Box Model · Flexbox · Grid · Typography · Colors · Animations · Variables · Responsive · &amp; more.</p>
+  </div>
+  <div class="scroll-hint">↓ SCROLL TO EXPLORE</div>
+</div>
+
+<nav class="nav">
+  <div class="nav-brand">CSS {}</div>
+  <a href="#syntax">Syntax</a>
+  <a href="#selectors">Selectors</a>
+  <a href="#specificity">Specificity</a>
+  <a href="#box">Box Model</a>
+  <a href="#display">Display</a>
+  <a href="#flexbox">Flexbox</a>
+  <a href="#grid">Grid</a>
+  <a href="#typography">Typography</a>
+  <a href="#colors">Colors</a>
+  <a href="#spacing">Spacing</a>
+  <a href="#positioning">Position</a>
+  <a href="#transitions">Transitions</a>
+  <a href="#animations">Animations</a>
+  <a href="#variables">Variables</a>
+  <a href="#responsive">Responsive</a>
+  <a href="#pseudo">Pseudo</a>
+  <a href="#misc">Misc</a>
+</nav>
+
+<!-- 01 SYNTAX -->
+<section class="section" id="syntax">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">01 /</span>
+    <h2 class="section-title">Syntax &amp; <span>Cascade</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card ca">
+      <div class="card-label">anatomy</div>
+      <h3>Rule Anatomy</h3>
+      <pre><span class="sel">selector</span> {
+  <span class="prop">property</span>: <span class="val">value</span>;
+  <span class="prop">property</span>: <span class="val">value1</span> <span class="val">value2</span>;
+}
+
+<span class="com">/* Multiple selectors */</span>
+<span class="sel">h1</span>, <span class="sel">h2</span>, <span class="sel">h3</span> {
+  <span class="prop">font-weight</span>: <span class="val">bold</span>;
+}
+
+<span class="com">/* Comment */</span>
+
+<span class="com">/* Import */</span>
+<span class="key">@import</span> <span class="val">url</span>(<span class="txt">'other.css'</span>);
+
+<span class="com">/* Apply to all */</span>
+<span class="sel">*</span> {
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+}</pre>
+    </div>
+    <div class="card ca2">
+      <div class="card-label">the cascade</div>
+      <h3>Cascade Order (Lowest → Highest Priority)</h3>
+      <table class="ct">
+        <tr><th>#</th><th>Source</th><th>Example</th></tr>
+        <tr><td>1</td><td>Browser defaults</td><td>h1 is large by default</td></tr>
+        <tr><td>2</td><td>User stylesheets</td><td>Accessibility prefs</td></tr>
+        <tr><td>3</td><td>Author CSS</td><td>Your stylesheet</td></tr>
+        <tr><td>4</td><td>Author !important</td><td>color: red !important</td></tr>
+        <tr><td>5</td><td>User !important</td><td>Accessibility override</td></tr>
+        <tr><td>6</td><td>Inline !important</td><td>style="…" + !important</td></tr>
+      </table>
+      <hr class="div">
+      <pre><span class="com">/* !important overrides all */</span>
+<span class="sel">p</span> { <span class="prop">color</span>: <span class="val">blue</span> !important; }
+
+<span class="com">/* Inheritance */</span>
+<span class="sel">body</span> { <span class="prop">font-family</span>: <span class="val">sans-serif</span>; }
+<span class="com">/* children inherit font-family */</span>
+
+<span class="com">/* Reset inherited value */</span>
+<span class="sel">a</span> { <span class="prop">color</span>: <span class="val">inherit</span>; }
+<span class="sel">p</span> { <span class="prop">all</span>: <span class="val">unset</span>; }</pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 02 SELECTORS -->
+<section class="section" id="selectors">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">02 /</span>
+    <h2 class="section-title"><span>Selectors</span></h2>
+  </div>
+  <div class="grid grid-3">
+    <div class="card ca">
+      <div class="card-label">basic</div>
+      <h3>Basic Selectors</h3>
+      <pre><span class="sel">*</span>           { } <span class="com">/* universal */</span>
+<span class="sel">div</span>         { } <span class="com">/* element */</span>
+<span class="sel">.class</span>      { } <span class="com">/* class */</span>
+<span class="sel">#id</span>         { } <span class="com">/* id */</span>
+<span class="sel">[attr]</span>      { } <span class="com">/* has attribute */</span>
+<span class="sel">[attr=val]</span>  { } <span class="com">/* exact value */</span>
+<span class="sel">[attr^=val]</span> { } <span class="com">/* starts with */</span>
+<span class="sel">[attr$=val]</span> { } <span class="com">/* ends with */</span>
+<span class="sel">[attr*=val]</span> { } <span class="com">/* contains */</span></pre>
+    </div>
+    <div class="card ca2">
+      <div class="card-label">combinators</div>
+      <h3>Combinator Selectors</h3>
+      <pre><span class="sel">A B</span>    { } <span class="com">/* descendant */</span>
+<span class="sel">A > B</span>  { } <span class="com">/* direct child */</span>
+<span class="sel">A + B</span>  { } <span class="com">/* adjacent sibling */</span>
+<span class="sel">A ~ B</span>  { } <span class="com">/* general sibling */</span>
+
+<span class="com">/* Examples */</span>
+<span class="sel">ul li</span>      { }  <span class="com">/* any li in ul */</span>
+<span class="sel">ul > li</span>    { }  <span class="com">/* direct li */</span>
+<span class="sel">h2 + p</span>    { }  <span class="com">/* p right after h2 */</span>
+<span class="sel">h2 ~ p</span>    { }  <span class="com">/* all p after h2 */</span>
+<span class="sel">.a.b</span>       { }  <span class="com">/* has both classes */</span></pre>
+    </div>
+    <div class="card ca3">
+      <div class="card-label">pseudo-classes</div>
+      <h3>Structural Pseudo-classes</h3>
+      <pre><span class="sel">:first-child</span>
+<span class="sel">:last-child</span>
+<span class="sel">:nth-child(2)</span>
+<span class="sel">:nth-child(odd)</span>
+<span class="sel">:nth-child(even)</span>
+<span class="sel">:nth-child(2n+1)</span>
+<span class="sel">:nth-of-type(2)</span>
+<span class="sel">:first-of-type</span>
+<span class="sel">:last-of-type</span>
+<span class="sel">:only-child</span>
+<span class="sel">:only-of-type</span>
+<span class="sel">:not(.class)</span>
+<span class="sel">:not(p, .skip)</span>  <span class="com">/* multi */</span>
+<span class="sel">:is(h1, h2, h3)</span>
+<span class="sel">:where(h1, h2)</span>  <span class="com">/* 0 spec */</span>
+<span class="sel">:has(img)</span>       <span class="com">/* parent */</span>
+<span class="sel">:empty</span>          <span class="com">/* no children */</span></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 03 SPECIFICITY -->
+<section class="section" id="specificity">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">03 /</span>
+    <h2 class="section-title"><span>Specificity</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card ca">
+      <div class="card-label">specificity score (a, b, c)</div>
+      <h3>How Specificity is Calculated</h3>
+      <div class="spec-bar">
+        <div class="spec-col">
+          <div class="spec-block" style="height:20px;background:rgba(244,114,182,0.2);border:1px solid var(--accent5);color:var(--accent5)">!imp</div>
+          <div class="spec-lbl">Wins all</div>
+        </div>
+        <div class="spec-col">
+          <div class="spec-block" style="height:80px;background:rgba(124,106,247,0.2);border:1px solid var(--accent);color:var(--accent)">#id</div>
+          <div class="spec-lbl">A — 1,0,0</div>
+        </div>
+        <div class="spec-col">
+          <div class="spec-block" style="height:50px;background:rgba(56,189,248,0.15);border:1px solid var(--accent2);color:var(--accent2)">.cls</div>
+          <div class="spec-lbl">B — 0,1,0</div>
+        </div>
+        <div class="spec-col">
+          <div class="spec-block" style="height:30px;background:rgba(74,222,128,0.12);border:1px solid var(--accent3);color:var(--accent3)">el</div>
+          <div class="spec-lbl">C — 0,0,1</div>
+        </div>
+        <div class="spec-col">
+          <div class="spec-block" style="height:10px;background:rgba(251,146,60,0.1);border:1px solid var(--accent4);color:var(--accent4)">*</div>
+          <div class="spec-lbl">0,0,0</div>
+        </div>
+      </div>
+      <hr class="div">
+      <table class="ct">
+        <tr><th>Selector</th><th>Score</th></tr>
+        <tr><td>*</td><td>0,0,0</td></tr>
+        <tr><td>p</td><td>0,0,1</td></tr>
+        <tr><td>p.note</td><td>0,1,1</td></tr>
+        <tr><td>.nav a</td><td>0,1,1</td></tr>
+        <tr><td>#header</td><td>1,0,0</td></tr>
+        <tr><td>#header .nav a</td><td>1,1,1</td></tr>
+        <tr><td>style=""</td><td>1,0,0,0</td></tr>
+        <tr><td>!important</td><td>Beats all</td></tr>
+      </table>
+    </div>
+    <div class="card ca2">
+      <div class="card-label">layers</div>
+      <h3>@layer — Modern Cascade Control</h3>
+      <pre><span class="com">/* Declare layer order */</span>
+<span class="key">@layer</span> reset, base, theme, utilities;
+
+<span class="key">@layer</span> base {
+  <span class="sel">h1</span> { <span class="prop">font-size</span>: <span class="num">2rem</span>; }
+}
+
+<span class="key">@layer</span> theme {
+  <span class="sel">h1</span> { <span class="prop">color</span>: <span class="val">navy</span>; }
+}
+
+<span class="com">/* utilities wins (declared last) */</span>
+<span class="key">@layer</span> utilities {
+  <span class="sel">.text-red</span> { <span class="prop">color</span>: <span class="val">red</span>; }
+}
+
+<span class="com">/* Unlayered styles win over all layers */</span></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 04 BOX MODEL -->
+<section class="section" id="box">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">04 /</span>
+    <h2 class="section-title">Box <span>Model</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card ca">
+      <div class="card-label">visual</div>
+      <h3>The Box Model</h3>
+      <div class="box-model">
+        <div class="bm-margin">margin
+          <div class="bm-border">border
+            <div class="bm-padding">padding
+              <div class="bm-content">content<br>width × height</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <pre style="margin-top:1rem"><span class="sel">div</span> {
+  <span class="prop">width</span>: <span class="num">300px</span>;
+  <span class="prop">height</span>: <span class="num">200px</span>;
+  <span class="prop">padding</span>: <span class="num">20px</span>;
+  <span class="prop">border</span>: <span class="num">2px</span> <span class="val">solid</span> <span class="val">#333</span>;
+  <span class="prop">margin</span>: <span class="num">16px</span>;
+  <span class="com">/* Total = 300+40+4+32 = 376px wide */</span>
+
+  <span class="com">/* Use border-box to make math easy: */</span>
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+  <span class="com">/* Now total width stays 300px */</span>
+}</pre>
+    </div>
+    <div class="card ca3">
+      <div class="card-label">shorthand</div>
+      <h3>Margin &amp; Padding Shorthands</h3>
+      <pre><span class="com">/* 1 value: all sides */</span>
+<span class="prop">margin</span>: <span class="num">16px</span>;
+
+<span class="com">/* 2 values: top/bottom  left/right */</span>
+<span class="prop">margin</span>: <span class="num">16px</span> <span class="num">24px</span>;
+
+<span class="com">/* 3 values: top  h  bottom */</span>
+<span class="prop">margin</span>: <span class="num">10px</span> <span class="num">20px</span> <span class="num">30px</span>;
+
+<span class="com">/* 4 values: top right bottom left */</span>
+<span class="prop">margin</span>: <span class="num">10px</span> <span class="num">20px</span> <span class="num">30px</span> <span class="num">40px</span>;
+
+<span class="com">/* Individual sides */</span>
+<span class="prop">margin-top</span>:    <span class="num">10px</span>;
+<span class="prop">margin-right</span>:  <span class="num">20px</span>;
+<span class="prop">margin-bottom</span>: <span class="num">10px</span>;
+<span class="prop">margin-left</span>:   <span class="num">20px</span>;
+
+<span class="com">/* Logical properties (modern) */</span>
+<span class="prop">margin-block</span>:  <span class="num">16px</span>; <span class="com">/* top+bottom */</span>
+<span class="prop">margin-inline</span>: <span class="num">24px</span>; <span class="com">/* left+right */</span>
+<span class="prop">padding-block-start</span>: <span class="num">8px</span>;
+
+<span class="com">/* Auto center */</span>
+<span class="prop">margin</span>: <span class="num">0</span> <span class="val">auto</span>; <span class="com">/* horizontal center */</span></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 05 DISPLAY -->
+<section class="section" id="display">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">05 /</span>
+    <h2 class="section-title">Display &amp; <span>Visibility</span></h2>
+  </div>
+  <div class="grid grid-3">
+    <div class="card ca4">
+      <div class="card-label">display values</div>
+      <h3>display Property</h3>
+      <table class="ct">
+        <tr><th>Value</th><th>Behavior</th></tr>
+        <tr><td>block</td><td>Full width, new line</td></tr>
+        <tr><td>inline</td><td>Width = content, no line break</td></tr>
+        <tr><td>inline-block</td><td>Inline + width/height work</td></tr>
+        <tr><td>flex</td><td>Flexbox container</td></tr>
+        <tr><td>inline-flex</td><td>Inline flex container</td></tr>
+        <tr><td>grid</td><td>Grid container</td></tr>
+        <tr><td>inline-grid</td><td>Inline grid container</td></tr>
+        <tr><td>none</td><td>Removed from layout</td></tr>
+        <tr><td>contents</td><td>Children rendered directly</td></tr>
+        <tr><td>table</td><td>Table behavior</td></tr>
+        <tr><td>list-item</td><td>Renders as li</td></tr>
+      </table>
+    </div>
+    <div class="card ca2">
+      <div class="card-label">visibility</div>
+      <h3>Show / Hide Techniques</h3>
+      <table class="ct">
+        <tr><th>Method</th><th>Space?</th><th>Events?</th></tr>
+        <tr><td>display: none</td><td>No</td><td>No</td></tr>
+        <tr><td>visibility: hidden</td><td>Yes</td><td>No</td></tr>
+        <tr><td>opacity: 0</td><td>Yes</td><td>Yes</td></tr>
+        <tr><td>clip-path: inset(100%)</td><td>Yes</td><td>No</td></tr>
+        <tr><td>transform: scale(0)</td><td>Yes</td><td>No</td></tr>
+        <tr><td>height: 0; overflow:hidden</td><td>No</td><td>No</td></tr>
+        <tr><td>pointer-events: none</td><td>Yes</td><td>No</td></tr>
+      </table>
+    </div>
+    <div class="card ca5">
+      <div class="card-label">overflow</div>
+      <h3>Overflow</h3>
+      <table class="ct">
+        <tr><th>Value</th><th>Behavior</th></tr>
+        <tr><td>visible</td><td>Overflows (default)</td></tr>
+        <tr><td>hidden</td><td>Clips overflow</td></tr>
+        <tr><td>scroll</td><td>Always scrollbar</td></tr>
+        <tr><td>auto</td><td>Scrollbar if needed</td></tr>
+        <tr><td>clip</td><td>Clips, no scroll, no paint</td></tr>
+      </table>
+      <pre style="margin-top:0.75rem"><span class="prop">overflow</span>: <span class="val">auto</span>;
+<span class="prop">overflow-x</span>: <span class="val">hidden</span>;
+<span class="prop">overflow-y</span>: <span class="val">scroll</span>;
+<span class="com">/* Text overflow */</span>
+<span class="prop">white-space</span>: <span class="val">nowrap</span>;
+<span class="prop">overflow</span>: <span class="val">hidden</span>;
+<span class="prop">text-overflow</span>: <span class="val">ellipsis</span>;</pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 06 FLEXBOX -->
+<section class="section" id="flexbox">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">06 /</span>
+    <h2 class="section-title">Flexbox</h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card ca full">
+      <div class="card-label">container properties</div>
+      <h3>Flex Container</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        <div>
+          <pre><span class="sel">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+
+  <span class="com">/* Direction */</span>
+  <span class="prop">flex-direction</span>: <span class="val">row</span>;         <span class="com">/* → */</span>
+  <span class="prop">flex-direction</span>: <span class="val">row-reverse</span>; <span class="com">/* ← */</span>
+  <span class="prop">flex-direction</span>: <span class="val">column</span>;      <span class="com">/* ↓ */</span>
+  <span class="prop">flex-direction</span>: <span class="val">column-reverse</span>;
+
+  <span class="com">/* Wrapping */</span>
+  <span class="prop">flex-wrap</span>: <span class="val">nowrap</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap-reverse</span>;
+
+  <span class="com">/* Shorthand */</span>
+  <span class="prop">flex-flow</span>: <span class="val">row wrap</span>;
+}</span></pre>
+        </div>
+        <div>
+          <pre><span class="com">/* Main axis (justify-content) */</span>
+<span class="prop">justify-content</span>: <span class="val">flex-start</span>;
+<span class="prop">justify-content</span>: <span class="val">flex-end</span>;
+<span class="prop">justify-content</span>: <span class="val">center</span>;
+<span class="prop">justify-content</span>: <span class="val">space-between</span>;
+<span class="prop">justify-content</span>: <span class="val">space-around</span>;
+<span class="prop">justify-content</span>: <span class="val">space-evenly</span>;
+
+<span class="com">/* Cross axis (align-items) */</span>
+<span class="prop">align-items</span>: <span class="val">stretch</span>;   <span class="com">/* default */</span>
+<span class="prop">align-items</span>: <span class="val">flex-start</span>;
+<span class="prop">align-items</span>: <span class="val">flex-end</span>;
+<span class="prop">align-items</span>: <span class="val">center</span>;
+<span class="prop">align-items</span>: <span class="val">baseline</span>;
+
+<span class="com">/* Multi-line cross axis */</span>
+<span class="prop">align-content</span>: <span class="val">flex-start</span>;
+
+<span class="com">/* Gap */</span>
+<span class="prop">gap</span>: <span class="num">1rem</span>;
+<span class="prop">row-gap</span>: <span class="num">1rem</span>; <span class="prop">column-gap</span>: <span class="num">2rem</span>;</pre>
+        </div>
+      </div>
+      <hr class="div">
+      <div class="card-label" style="margin-bottom:0.5rem">visual demos</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem">
+        <div>
+          <div class="spec-lbl" style="margin-bottom:4px">space-between</div>
+          <div class="flex-demo" style="justify-content:space-between">
+            <div class="flex-item">1</div><div class="flex-item">2</div><div class="flex-item">3</div>
+          </div>
+        </div>
+        <div>
+          <div class="spec-lbl" style="margin-bottom:4px">center + center</div>
+          <div class="flex-demo" style="justify-content:center;align-items:center;height:60px">
+            <div class="flex-item">1</div><div class="flex-item">2</div>
+          </div>
+        </div>
+        <div>
+          <div class="spec-lbl" style="margin-bottom:4px">flex: 1 (grow)</div>
+          <div class="flex-demo">
+            <div class="flex-item grow">1</div><div class="flex-item" style="width:40px">2</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card ca2">
+      <div class="card-label">item properties</div>
+      <h3>Flex Items</h3>
+      <pre><span class="sel">.item</span> {
+  <span class="com">/* flex-grow flex-shrink flex-basis */</span>
+  <span class="prop">flex</span>: <span class="num">1</span> <span class="num">1</span> <span class="val">auto</span>;   <span class="com">/* shorthand */</span>
+  <span class="prop">flex</span>: <span class="num">1</span>;          <span class="com">/* grow only */</span>
+  <span class="prop">flex</span>: <span class="val">none</span>;       <span class="com">/* rigid */</span>
+  <span class="prop">flex</span>: <span class="val">auto</span>;       <span class="com">/* 1 1 auto */</span>
+
+  <span class="prop">flex-grow</span>:   <span class="num">1</span>;    <span class="com">/* take free space */</span>
+  <span class="prop">flex-shrink</span>: <span class="num">0</span>;    <span class="com">/* don't shrink */</span>
+  <span class="prop">flex-basis</span>:  <span class="num">200px</span>;<span class="com">/* starting size */</span>
+
+  <span class="prop">align-self</span>: <span class="val">center</span>; <span class="com">/* override */</span>
+  <span class="prop">order</span>: <span class="num">2</span>;            <span class="com">/* reorder */</span>
+}</pre>
+    </div>
+    <div class="card ca3">
+      <div class="card-label">centering tricks</div>
+      <h3>Perfect Centering</h3>
+      <pre><span class="com">/* Absolute centering */</span>
+<span class="sel">.parent</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">justify-content</span>: <span class="val">center</span>;
+  <span class="prop">align-items</span>: <span class="val">center</span>;
+}
+
+<span class="com">/* One liner (modern) */</span>
+<span class="sel">.parent</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">place-content</span>: <span class="val">center</span>;
+}
+
+<span class="com">/* Single item centering */</span>
+<span class="sel">.item</span> {
+  <span class="prop">margin</span>: <span class="val">auto</span>; <span class="com">/* in flex parent */</span>
+}</pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 07 GRID -->
+<section class="section" id="grid">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">07 /</span>
+    <h2 class="section-title">CSS <span>Grid</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card ca full">
+      <div class="card-label">container</div>
+      <h3>Grid Container Properties</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        <pre><span class="sel">.grid</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+
+  <span class="com">/* Define columns */</span>
+  <span class="prop">grid-template-columns</span>:
+    <span class="num">200px</span> <span class="num">1fr</span> <span class="num">2fr</span>;
+  <span class="prop">grid-template-columns</span>:
+    <span class="val">repeat</span>(<span class="num">3</span>, <span class="num">1fr</span>);
+  <span class="prop">grid-template-columns</span>:
+    <span class="val">repeat</span>(<span class="val">auto-fill</span>, <span class="val">minmax</span>(<span class="num">200px</span>, <span class="num">1fr</span>));
+
+  <span class="com">/* Define rows */</span>
+  <span class="prop">grid-template-rows</span>:
+    <span class="val">auto</span> <span class="num">1fr</span> <span class="num">60px</span>;
+
+  <span class="com">/* Gap */</span>
+  <span class="prop">gap</span>: <span class="num">1rem</span>;
+  <span class="prop">column-gap</span>: <span class="num">2rem</span>;
+  <span class="prop">row-gap</span>: <span class="num">1rem</span>;
+}</pre>
+        <pre><span class="com">/* Named areas */</span>
+<span class="sel">.grid</span> {
+  <span class="prop">grid-template-areas</span>:
+    <span class="val">"header header"</span>
+    <span class="val">"sidebar main"</span>
+    <span class="val">"footer footer"</span>;
+}
+<span class="sel">header</span> { <span class="prop">grid-area</span>: <span class="val">header</span>; }
+<span class="sel">.sidebar</span> { <span class="prop">grid-area</span>: <span class="val">sidebar</span>; }
+<span class="sel">main</span>   { <span class="prop">grid-area</span>: <span class="val">main</span>; }
+<span class="sel">footer</span> { <span class="prop">grid-area</span>: <span class="val">footer</span>; }
+
+<span class="com">/* Alignment */</span>
+<span class="prop">justify-items</span>: <span class="val">start</span>;  <span class="com">/* cells */</span>
+<span class="prop">align-items</span>: <span class="val">center</span>;
+<span class="prop">place-items</span>: <span class="val">center</span>;    <span class="com">/* both */</span>
+<span class="prop">justify-content</span>: <span class="val">space-between</span>;
+<span class="prop">align-content</span>: <span class="val">center</span>;</pre>
+      </div>
+      <hr class="div">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div>
+          <div class="spec-lbl" style="margin-bottom:4px">3-col repeat(3, 1fr)</div>
+          <div class="grid-demo" style="grid-template-columns:repeat(3,1fr)">
+            <div class="grid-item">1</div><div class="grid-item">2</div>
+            <div class="grid-item">3</div><div class="grid-item gi-span2">span 2</div>
+          </div>
+        </div>
+        <div>
+          <div class="spec-lbl" style="margin-bottom:4px">auto-fill minmax(80px,1fr)</div>
+          <div class="grid-demo" style="grid-template-columns:repeat(auto-fill,minmax(70px,1fr))">
+            <div class="grid-item">A</div><div class="grid-item">B</div>
+            <div class="grid-item">C</div><div class="grid-item">D</div>
+            <div class="grid-item">E</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card ca4">
+      <div class="card-label">item placement</div>
+      <h3>Grid Item Properties</h3>
+      <pre><span class="sel">.item</span> {
+  <span class="com">/* Line-based placement */</span>
+  <span class="prop">grid-column</span>: <span class="num">1</span> / <span class="num">3</span>;  <span class="com">/* cols 1-2 */</span>
+  <span class="prop">grid-column</span>: <span class="num">1</span> / <span class="val">-1</span>; <span class="com">/* full width */</span>
+  <span class="prop">grid-column</span>: <span class="val">span</span> <span class="num">2</span>;  <span class="com">/* span 2 cols */</span>
+  <span class="prop">grid-row</span>:    <span class="num">2</span> / <span class="num">4</span>;   <span class="com">/* rows 2-3 */</span>
+
+  <span class="com">/* Named area */</span>
+  <span class="prop">grid-area</span>: <span class="val">header</span>;
+
+  <span class="com">/* Self alignment */</span>
+  <span class="prop">justify-self</span>: <span class="val">center</span>;
+  <span class="prop">align-self</span>: <span class="val">end</span>;
+  <span class="prop">place-self</span>: <span class="val">center end</span>;
+}</pre>
+    </div>
+    <div class="card ca5">
+      <div class="card-label">fr unit & functions</div>
+      <h3>Grid Functions</h3>
+      <pre><span class="com">/* fr = fractional unit */</span>
+<span class="prop">grid-template-columns</span>: <span class="num">1fr</span> <span class="num">2fr</span> <span class="num">1fr</span>;
+<span class="com">/* 25% 50% 25% of available space */</span>
+
+<span class="com">/* minmax() */</span>
+<span class="prop">grid-template-columns</span>:
+  <span class="val">minmax</span>(<span class="num">100px</span>, <span class="num">1fr</span>);
+<span class="com">/* at least 100px, up to 1fr */</span>
+
+<span class="com">/* repeat() */</span>
+<span class="prop">grid-template-columns</span>:
+  <span class="val">repeat</span>(<span class="num">4</span>, <span class="num">1fr</span>);
+
+<span class="com">/* auto-fill vs auto-fit */</span>
+<span class="com">/* auto-fill: keeps empty tracks */</span>
+<span class="com">/* auto-fit: collapses empty tracks */</span>
+<span class="prop">grid-template-columns</span>:
+  <span class="val">repeat</span>(<span class="val">auto-fit</span>,
+    <span class="val">minmax</span>(<span class="num">250px</span>, <span class="num">1fr</span>));</pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 08 TYPOGRAPHY -->
+<section class="section" id="typography">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">08 /</span>
+    <h2 class="section-title"><span>Typography</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card ca">
+      <div class="card-label">font properties</div>
+      <h3>Font Control</h3>
+      <pre><span class="sel">p</span> {
+  <span class="prop">font-family</span>: <span class="val">'Inter'</span>, <span class="val">sans-serif</span>;
+  <span class="prop">font-size</span>: <span class="num">1rem</span>;      <span class="com">/* 16px */</span>
+  <span class="prop">font-weight</span>: <span class="num">400</span>;     <span class="com">/* 100–900 */</span>
+  <span class="prop">font-style</span>: <span class="val">italic</span>;
+  <span class="prop">font-variant</span>: <span class="val">small-caps</span>;
+  <span class="prop">line-height</span>: <span class="num">1.6</span>;     <span class="com">/* unitless best */</span>
+  <span class="prop">letter-spacing</span>: <span class="num">0.05em</span>;
+  <span class="prop">word-spacing</span>: <span class="num">0.1em</span>;
+
+  <span class="com">/* Shorthand: style variant weight size/line family */</span>
+  <span class="prop">font</span>: <span class="val">italic</span> <span class="num">700</span> <span class="num">1.2rem</span>/<span class="num">1.5</span> <span class="val">'Georgia'</span>, <span class="val">serif</span>;
+}
+
+<span class="com">/* Custom font */</span>
+<span class="key">@font-face</span> {
+  <span class="prop">font-family</span>: <span class="val">'MyFont'</span>;
+  <span class="prop">src</span>: <span class="val">url</span>(<span class="txt">'font.woff2'</span>) <span class="val">format</span>(<span class="txt">'woff2'</span>);
+  <span class="prop">font-weight</span>: <span class="num">400</span> <span class="num">700</span>; <span class="com">/* variable range */</span>
+  <span class="prop">font-display</span>: <span class="val">swap</span>;
+}</pre>
+    </div>
+    <div class="card ca2">
+      <div class="card-label">text properties</div>
+      <h3>Text Styling</h3>
+      <pre><span class="sel">p</span> {
+  <span class="prop">text-align</span>: <span class="val">left</span> | <span class="val">center</span> | <span class="val">right</span> | <span class="val">justify</span>;
+  <span class="prop">text-decoration</span>: <span class="val">underline</span> <span class="val">wavy</span> <span class="val">red</span>;
+  <span class="prop">text-transform</span>: <span class="val">uppercase</span> | <span class="val">lowercase</span> | <span class="val">capitalize</span>;
+  <span class="prop">text-indent</span>: <span class="num">2em</span>;
+  <span class="prop">text-shadow</span>: <span class="num">2px</span> <span class="num">2px</span> <span class="num">4px</span> <span class="val">rgba(0,0,0,0.5)</span>;
+  <span class="prop">text-overflow</span>: <span class="val">ellipsis</span>;
+
+  <span class="prop">white-space</span>: <span class="val">nowrap</span>;  <span class="com">/* no wrap */</span>
+  <span class="prop">white-space</span>: <span class="val">pre</span>;     <span class="com">/* preserve spaces */</span>
+  <span class="prop">white-space</span>: <span class="val">pre-wrap</span>;<span class="com">/* wrap + preserve */</span>
+
+  <span class="prop">word-break</span>: <span class="val">break-word</span>;
+  <span class="prop">overflow-wrap</span>: <span class="val">anywhere</span>;
+  <span class="prop">hyphens</span>: <span class="val">auto</span>;
+
+  <span class="com">/* Clamp multi-line text */</span>
+  <span class="prop">display</span>: <span class="val">-webkit-box</span>;
+  <span class="prop">-webkit-line-clamp</span>: <span class="num">3</span>;
+  <span class="prop">-webkit-box-orient</span>: <span class="val">vertical</span>;
+  <span class="prop">overflow</span>: <span class="val">hidden</span>;
+}</pre>
+    </div>
+    <div class="card ca3">
+      <div class="card-label">units</div>
+      <h3>CSS Units Cheat Sheet</h3>
+      <table class="ct">
+        <tr><th>Unit</th><th>Relative to</th><th>Best for</th></tr>
+        <tr><td>px</td><td>Screen pixel</td><td>Borders, precise</td></tr>
+        <tr><td>rem</td><td>Root font-size</td><td>Font sizes, spacing</td></tr>
+        <tr><td>em</td><td>Parent font-size</td><td>Component-relative</td></tr>
+        <tr><td>%</td><td>Parent element</td><td>Widths, fluid layouts</td></tr>
+        <tr><td>vw</td><td>Viewport width</td><td>Full-width sections</td></tr>
+        <tr><td>vh</td><td>Viewport height</td><td>Hero sections</td></tr>
+        <tr><td>dvh</td><td>Dynamic viewport</td><td>Mobile safe height</td></tr>
+        <tr><td>fr</td><td>Grid fraction</td><td>Grid columns/rows</td></tr>
+        <tr><td>ch</td><td>Width of "0"</td><td>Readable line width</td></tr>
+        <tr><td>clamp()</td><td>min/preferred/max</td><td>Fluid typography</td></tr>
+      </table>
+      <pre style="margin-top:0.75rem"><span class="com">/* clamp(min, preferred, max) */</span>
+<span class="prop">font-size</span>: <span class="val">clamp</span>(<span class="num">1rem</span>, <span class="num">4vw</span>, <span class="num">3rem</span>);
+<span class="prop">width</span>: <span class="val">clamp</span>(<span class="num">300px</span>, <span class="num">50%</span>, <span class="num">800px</span>);</pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 09 COLORS -->
+<section class="section" id="colors">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">09 /</span>
+    <h2 class="section-title">Colors &amp; <span>Backgrounds</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card ca">
+      <div class="card-label">color formats</div>
+      <h3>All Color Notations</h3>
+      <pre><span class="com">/* Named */</span>
+<span class="prop">color</span>: <span class="val">red</span>;  <span class="prop">color</span>: <span class="val">cornflowerblue</span>;
+
+<span class="com">/* Hex */</span>
+<span class="prop">color</span>: <span class="val">#ff6b35</span>;    <span class="com">/* 6-digit */</span>
+<span class="prop">color</span>: <span class="val">#f63</span>;       <span class="com">/* 3-digit shorthand */</span>
+<span class="prop">color</span>: <span class="val">#ff6b3580</span>;  <span class="com">/* + alpha */</span>
+
+<span class="com">/* RGB / RGBA */</span>
+<span class="prop">color</span>: <span class="val">rgb</span>(<span class="num">255</span>, <span class="num">107</span>, <span class="num">53</span>);
+<span class="prop">color</span>: <span class="val">rgba</span>(<span class="num">255</span>, <span class="num">107</span>, <span class="num">53</span>, <span class="num">0.5</span>);
+<span class="prop">color</span>: <span class="val">rgb</span>(<span class="num">255</span> <span class="num">107</span> <span class="num">53</span> / <span class="num">50%</span>); <span class="com">/* modern */</span>
+
+<span class="com">/* HSL / HSLA */</span>
+<span class="prop">color</span>: <span class="val">hsl</span>(<span class="num">17</span>, <span class="num">100%</span>, <span class="num">60%</span>);
+<span class="prop">color</span>: <span class="val">hsla</span>(<span class="num">17</span>, <span class="num">100%</span>, <span class="num">60%</span>, <span class="num">0.8</span>);
+<span class="prop">color</span>: <span class="val">hsl</span>(<span class="num">17</span> <span class="num">100%</span> <span class="num">60%</span> / <span class="num">80%</span>);
+
+<span class="com">/* OKLCH (perceptual, modern) */</span>
+<span class="prop">color</span>: <span class="val">oklch</span>(<span class="num">0.7</span> <span class="num">0.2</span> <span class="num">30</span>);
+<span class="prop">color</span>: <span class="val">oklch</span>(<span class="num">70%</span> <span class="num">0.2</span> <span class="num">30</span> / <span class="num">80%</span>);
+
+<span class="com">/* Current color */</span>
+<span class="prop">border</span>: <span class="num">1px</span> <span class="val">solid</span> <span class="val">currentColor</span>;
+<span class="prop">color</span>: <span class="val">transparent</span>;</pre>
+    </div>
+    <div class="card ca2">
+      <div class="card-label">backgrounds</div>
+      <h3>Background Properties</h3>
+      <pre><span class="sel">div</span> {
+  <span class="prop">background-color</span>: <span class="val">#f0f0f0</span>;
+  <span class="prop">background-image</span>: <span class="val">url</span>(<span class="txt">'img.jpg'</span>);
+  <span class="prop">background-repeat</span>: <span class="val">no-repeat</span>;
+  <span class="prop">background-size</span>: <span class="val">cover</span> | <span class="val">contain</span> | <span class="num">50%</span>;
+  <span class="prop">background-position</span>: <span class="val">center</span>;
+  <span class="prop">background-attachment</span>: <span class="val">fixed</span>;
+  <span class="prop">background-clip</span>: <span class="val">text</span>; <span class="com">/* clip to text */</span>
+  <span class="prop">background-origin</span>: <span class="val">border-box</span>;
+
+  <span class="com">/* Shorthand */</span>
+  <span class="prop">background</span>: <span class="val">url</span>(<span class="txt">'img.jpg'</span>) <span class="val">center</span>/<span class="val">cover</span> <span class="val">no-repeat</span>;
+
+  <span class="com">/* Multiple backgrounds */</span>
+  <span class="prop">background</span>:
+    <span class="val">url</span>(<span class="txt">'overlay.png'</span>) <span class="val">center</span>/<span class="val">cover</span>,
+    <span class="val">url</span>(<span class="txt">'bg.jpg'</span>) <span class="val">center</span>/<span class="val">cover</span>;
+}
+
+<span class="com">/* Gradients */</span>
+<span class="prop">background</span>: <span class="val">linear-gradient</span>(<span class="num">45deg</span>, <span class="val">red</span>, <span class="val">blue</span>);
+<span class="prop">background</span>: <span class="val">radial-gradient</span>(<span class="val">circle</span>, <span class="val">red</span>, <span class="val">blue</span>);
+<span class="prop">background</span>: <span class="val">conic-gradient</span>(<span class="val">red</span>, <span class="val">blue</span>, <span class="val">red</span>);
+<span class="prop">background</span>: <span class="val">linear-gradient</span>(<span class="val">red</span> <span class="num">0%</span> <span class="num">50%</span>, <span class="val">blue</span> <span class="num">50%</span>);</pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 10 POSITIONING -->
+<section class="section" id="positioning">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">10 /</span>
+    <h2 class="section-title">Positioning &amp; <span>Z-index</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card ca">
+      <div class="card-label">position values</div>
+      <h3>CSS Position</h3>
+      <table class="ct">
+        <tr><th>Value</th><th>Behavior</th></tr>
+        <tr><td>static</td><td>Default — in normal flow, top/left/etc. ignored</td></tr>
+        <tr><td>relative</td><td>Normal flow + offset from self; creates stacking context</td></tr>
+        <tr><td>absolute</td><td>Removed from flow; offset from nearest positioned ancestor</td></tr>
+        <tr><td>fixed</td><td>Removed from flow; offset from viewport; ignores scroll</td></tr>
+        <tr><td>sticky</td><td>Normal flow until scroll threshold, then fixed</td></tr>
+      </table>
+      <pre style="margin-top:0.75rem"><span class="com">/* Absolute centered overlay */</span>
+<span class="sel">.overlay</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">inset</span>: <span class="num">0</span>; <span class="com">/* top:0 right:0 bottom:0 left:0 */</span>
+}
+
+<span class="com">/* Centered absolutely */</span>
+<span class="sel">.centered</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">top</span>: <span class="num">50%</span>; <span class="prop">left</span>: <span class="num">50%</span>;
+  <span class="prop">transform</span>: <span class="val">translate</span>(<span class="num">-50%</span>, <span class="num">-50%</span>);
+}
+
+<span class="com">/* Sticky header */</span>
+<span class="sel">header</span> {
+  <span class="prop">position</span>: <span class="val">sticky</span>;
+  <span class="prop">top</span>: <span class="num">0</span>; <span class="prop">z-index</span>: <span class="num">100</span>;
+}</pre>
+    </div>
+    <div class="card ca4">
+      <div class="card-label">stacking</div>
+      <h3>Z-index &amp; Stacking Context</h3>
+      <pre><span class="com">/* Z-index only works on positioned elements */</span>
+<span class="sel">.modal</span>     { <span class="prop">z-index</span>: <span class="num">1000</span>; <span class="prop">position</span>: <span class="val">fixed</span>; }
+<span class="sel">.dropdown</span>  { <span class="prop">z-index</span>: <span class="num">100</span>; <span class="prop">position</span>: <span class="val">absolute</span>; }
+<span class="sel">.tooltip</span>   { <span class="prop">z-index</span>: <span class="num">50</span>;  <span class="prop">position</span>: <span class="val">relative</span>; }
+
+<span class="com">/* New stacking context created by: */</span>
+<span class="com">/* position: relative/abs/fixed/sticky + z-index */</span>
+<span class="com">/* opacity < 1 */</span>
+<span class="com">/* transform, filter, will-change */</span>
+<span class="com">/* isolation: isolate (explicit!) */</span>
+
+<span class="com">/* Fix z-index wars */</span>
+<span class="sel">.component</span> {
+  <span class="prop">isolation</span>: <span class="val">isolate</span>; <span class="com">/* own stacking ctx */</span>
+}
+
+<span class="com">/* Z-index scale convention */</span>
+<span class="com">/* base: 0, sticky: 100 */</span>
+<span class="com">/* dropdown: 200, modal: 300 */</span>
+<span class="com">/* toast: 400, tooltip: 500 */</span></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 11 TRANSITIONS & TRANSFORMS -->
+<section class="section" id="transitions">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">11 /</span>
+    <h2 class="section-title">Transitions &amp; <span>Transforms</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card ca">
+      <div class="card-label">transitions</div>
+      <h3>CSS Transitions</h3>
+      <pre><span class="sel">.btn</span> {
+  <span class="com">/* property duration easing delay */</span>
+  <span class="prop">transition</span>:
+    <span class="val">background-color</span> <span class="num">0.3s</span> <span class="val">ease</span>,
+    <span class="val">transform</span> <span class="num">0.2s</span> <span class="val">ease-out</span>;
+
+  <span class="com">/* All properties */</span>
+  <span class="prop">transition</span>: <span class="val">all</span> <span class="num">0.3s</span> <span class="val">ease</span>;
+}
+<span class="sel">.btn</span><span class="key">:hover</span> {
+  <span class="prop">background</span>: <span class="val">blue</span>;
+  <span class="prop">transform</span>: <span class="val">scale</span>(<span class="num">1.05</span>);
+}
+
+<span class="com">/* Easing functions */</span>
+<span class="com">/* ease | linear | ease-in | ease-out */</span>
+<span class="com">/* ease-in-out | step-start | step-end */</span>
+<span class="prop">transition-timing-function</span>:
+  <span class="val">cubic-bezier</span>(<span class="num">0.25</span>, <span class="num">0.1</span>, <span class="num">0.25</span>, <span class="num">1</span>);</pre>
+      <div class="t-demo">Hover me ✦</div>
+    </div>
+    <div class="card ca2">
+      <div class="card-label">transforms</div>
+      <h3>CSS Transforms (2D + 3D)</h3>
+      <pre><span class="sel">.el</span> {
+  <span class="com">/* 2D */</span>
+  <span class="prop">transform</span>: <span class="val">translate</span>(<span class="num">50px</span>, <span class="num">100px</span>);
+  <span class="prop">transform</span>: <span class="val">translateX</span>(<span class="num">50px</span>);
+  <span class="prop">transform</span>: <span class="val">scale</span>(<span class="num">1.5</span>);
+  <span class="prop">transform</span>: <span class="val">scale</span>(<span class="num">1.2</span>, <span class="num">0.8</span>);  <span class="com">/* x, y */</span>
+  <span class="prop">transform</span>: <span class="val">rotate</span>(<span class="num">45deg</span>);
+  <span class="prop">transform</span>: <span class="val">skew</span>(<span class="num">10deg</span>, <span class="num">5deg</span>);
+
+  <span class="com">/* Chain transforms */</span>
+  <span class="prop">transform</span>: <span class="val">translateX</span>(<span class="num">50px</span>)
+              <span class="val">rotate</span>(<span class="num">45deg</span>)
+              <span class="val">scale</span>(<span class="num">1.2</span>);
+
+  <span class="com">/* 3D */</span>
+  <span class="prop">transform</span>: <span class="val">rotateX</span>(<span class="num">45deg</span>);
+  <span class="prop">transform</span>: <span class="val">rotateY</span>(<span class="num">45deg</span>);
+  <span class="prop">transform</span>: <span class="val">perspective</span>(<span class="num">1000px</span>)
+              <span class="val">rotateY</span>(<span class="num">30deg</span>);
+  <span class="prop">transform-style</span>: <span class="val">preserve-3d</span>;
+
+  <span class="com">/* Origin */</span>
+  <span class="prop">transform-origin</span>: <span class="val">top left</span>;
+  <span class="prop">transform-origin</span>: <span class="num">50%</span> <span class="num">50%</span>; <span class="com">/* default */</span>
+}</pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 12 ANIMATIONS -->
+<section class="section" id="animations">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">12 /</span>
+    <h2 class="section-title">CSS <span>Animations</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card ca3">
+      <div class="card-label">@keyframes</div>
+      <h3>Keyframe Animations</h3>
+      <pre><span class="com">/* Define animation */</span>
+<span class="key">@keyframes</span> <span class="sel">slideIn</span> {
+  <span class="key">from</span> {
+    <span class="prop">transform</span>: <span class="val">translateX</span>(<span class="num">-100%</span>);
+    <span class="prop">opacity</span>: <span class="num">0</span>;
+  }
+  <span class="key">to</span> {
+    <span class="prop">transform</span>: <span class="val">translateX</span>(<span class="num">0</span>);
+    <span class="prop">opacity</span>: <span class="num">1</span>;
+  }
+}
+
+<span class="key">@keyframes</span> <span class="sel">pulse</span> {
+  <span class="num">0%</span>, <span class="num">100%</span> { <span class="prop">transform</span>: <span class="val">scale</span>(<span class="num">1</span>); }
+  <span class="num">50%</span>      { <span class="prop">transform</span>: <span class="val">scale</span>(<span class="num">1.1</span>); }
+}
+
+<span class="com">/* Apply animation */</span>
+<span class="sel">.card</span> {
+  <span class="com">/* name duration timing delay */</span>
+  <span class="com">/* iteration direction fill-mode */</span>
+  <span class="prop">animation</span>:
+    <span class="val">slideIn</span> <span class="num">0.5s</span> <span class="val">ease-out</span> <span class="num">0s</span>
+    <span class="num">1</span> <span class="val">normal</span> <span class="val">both</span>;
+
+  <span class="com">/* Or separate properties: */</span>
+  <span class="prop">animation-name</span>: <span class="val">slideIn</span>;
+  <span class="prop">animation-duration</span>: <span class="num">0.5s</span>;
+  <span class="prop">animation-timing-function</span>: <span class="val">ease-out</span>;
+  <span class="prop">animation-delay</span>: <span class="num">0.1s</span>;
+  <span class="prop">animation-iteration-count</span>: <span class="val">infinite</span>;
+  <span class="prop">animation-direction</span>: <span class="val">alternate</span>;
+  <span class="prop">animation-fill-mode</span>: <span class="val">forwards</span>;
+  <span class="prop">animation-play-state</span>: <span class="val">paused</span>;
+}</pre>
+    </div>
+    <div class="card ca5">
+      <div class="card-label">performance</div>
+      <h3>Animation Best Practices</h3>
+      <pre><span class="com">/* GPU-accelerated properties (no reflow) */</span>
+<span class="com">/* ✓ Use these: */</span>
+<span class="prop">transform</span>: <span class="val">translate</span>(), <span class="val">scale</span>(), <span class="val">rotate</span>();
+<span class="prop">opacity</span>: <span class="num">0</span> to <span class="num">1</span>;
+<span class="prop">filter</span>: <span class="val">blur</span>(), <span class="val">drop-shadow</span>();
+
+<span class="com">/* ✗ Avoid animating (causes reflow): */</span>
+<span class="com">/* width, height, top, left, margin,  */</span>
+<span class="com">/* padding, font-size, display         */</span>
+
+<span class="com">/* Hint browser to create layer */</span>
+<span class="sel">.animated</span> {
+  <span class="prop">will-change</span>: <span class="val">transform, opacity</span>;
+  <span class="com">/* Remove after animation done! */</span>
+}
+
+<span class="com">/* Staggered animations */</span>
+<span class="sel">.item</span><span class="key">:nth-child(1)</span> { <span class="prop">animation-delay</span>: <span class="num">0.1s</span>; }
+<span class="sel">.item</span><span class="key">:nth-child(2)</span> { <span class="prop">animation-delay</span>: <span class="num">0.2s</span>; }
+<span class="sel">.item</span><span class="key">:nth-child(3)</span> { <span class="prop">animation-delay</span>: <span class="num">0.3s</span>; }
+
+<span class="com">/* Respect motion preferences */</span>
+<span class="key">@media</span> (<span class="prop">prefers-reduced-motion</span>: <span class="val">reduce</span>) {
+  <span class="sel">*</span> { <span class="prop">animation-duration</span>: <span class="num">0.01ms</span> !important; }
+}</pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 13 CSS VARIABLES -->
+<section class="section" id="variables">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">13 /</span>
+    <h2 class="section-title">CSS <span>Variables</span> &amp; Functions</h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card ca">
+      <div class="card-label">custom properties</div>
+      <h3>CSS Variables (Custom Properties)</h3>
+      <pre><span class="com">/* Declare on :root (global) */</span>
+<span class="sel">:root</span> {
+  <span class="prop">--color-primary</span>: <span class="val">#7c6af7</span>;
+  <span class="prop">--color-bg</span>: <span class="val">#06090f</span>;
+  <span class="prop">--font-size-base</span>: <span class="num">1rem</span>;
+  <span class="prop">--spacing</span>: <span class="num">8px</span>;
+  <span class="prop">--radius</span>: <span class="num">4px</span>;
+  <span class="prop">--shadow</span>: <span class="num">0</span> <span class="num">4px</span> <span class="num">20px</span> <span class="val">rgba(0,0,0,0.3)</span>;
+}
+
+<span class="com">/* Use with var() */</span>
+<span class="sel">.btn</span> {
+  <span class="prop">background</span>: <span class="val">var</span>(--color-primary);
+  <span class="prop">padding</span>: <span class="val">var</span>(--spacing) <span class="val">calc</span>(<span class="val">var</span>(--spacing) * <span class="num">2</span>);
+  <span class="prop">border-radius</span>: <span class="val">var</span>(--radius);
+  <span class="prop">box-shadow</span>: <span class="val">var</span>(--shadow);
+}
+
+<span class="com">/* Fallback value */</span>
+<span class="prop">color</span>: <span class="val">var</span>(--undefined, <span class="val">red</span>);
+
+<span class="com">/* Override in component scope */</span>
+<span class="sel">.dark-card</span> {
+  <span class="prop">--color-primary</span>: <span class="val">#4ade80</span>;
+}
+
+<span class="com">/* Update from JS */</span>
+<span class="txt">document.documentElement.style
+  .setProperty('--color-primary', '#f00');</span></pre>
+    </div>
+    <div class="card ca6">
+      <div class="card-label">functions</div>
+      <h3>CSS Functions</h3>
+      <pre><span class="com">/* Math */</span>
+<span class="prop">width</span>: <span class="val">calc</span>(<span class="num">100%</span> - <span class="num">2rem</span>);
+<span class="prop">width</span>: <span class="val">min</span>(<span class="num">500px</span>, <span class="num">90%</span>);
+<span class="prop">width</span>: <span class="val">max</span>(<span class="num">200px</span>, <span class="num">50%</span>);
+<span class="prop">font-size</span>: <span class="val">clamp</span>(<span class="num">1rem</span>, <span class="num">3vw</span>, <span class="num">2rem</span>);
+<span class="prop">width</span>: <span class="val">round</span>(<span class="val">var</span>(--w), <span class="num">10px</span>);
+
+<span class="com">/* Color */</span>
+<span class="prop">color</span>: <span class="val">color-mix</span>(<span class="key">in</span> <span class="val">srgb</span>, <span class="val">red</span> <span class="num">50%</span>, <span class="val">blue</span>);
+<span class="prop">color</span>: <span class="val">light-dark</span>(<span class="val">white</span>, <span class="val">black</span>);
+
+<span class="com">/* Gradients */</span>
+<span class="prop">background</span>: <span class="val">linear-gradient</span>(<span class="num">90deg</span>, <span class="val">red</span>, <span class="val">blue</span>);
+<span class="prop">background</span>: <span class="val">radial-gradient</span>(<span class="val">circle at top</span>, <span class="val">red</span>, <span class="val">blue</span>);
+<span class="prop">background</span>: <span class="val">conic-gradient</span>(<span class="key">from</span> <span class="num">90deg</span>, <span class="val">red</span>, <span class="val">blue</span>);
+
+<span class="com">/* Counters */</span>
+<span class="prop">counter-reset</span>: <span class="val">steps</span>;
+<span class="prop">counter-increment</span>: <span class="val">steps</span>;
+<span class="prop">content</span>: <span class="val">counter</span>(<span class="val">steps</span>);
+
+<span class="com">/* Shapes */</span>
+<span class="prop">clip-path</span>: <span class="val">polygon</span>(<span class="num">0</span> <span class="num">0</span>, <span class="num">100%</span> <span class="num">0</span>, <span class="num">100%</span> <span class="num">80%</span>, <span class="num">0</span> <span class="num">100%</span>);
+<span class="prop">clip-path</span>: <span class="val">circle</span>(<span class="num">50%</span>);
+<span class="prop">clip-path</span>: <span class="val">inset</span>(<span class="num">10px</span> <span class="val">round</span> <span class="num">8px</span>);</pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 14 RESPONSIVE -->
+<section class="section" id="responsive">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">14 /</span>
+    <h2 class="section-title">Responsive &amp; <span>@Media</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card ca2">
+      <div class="card-label">media queries</div>
+      <h3>@media Queries</h3>
+      <pre><span class="com">/* Mobile-first approach */</span>
+<span class="com">/* Base styles (mobile) */</span>
+<span class="sel">.grid</span> { <span class="prop">columns</span>: <span class="num">1</span>; }
+
+<span class="key">@media</span> (<span class="prop">min-width</span>: <span class="num">640px</span>)  { <span class="com">/* sm */</span>
+  <span class="sel">.grid</span> { <span class="prop">columns</span>: <span class="num">2</span>; }
+}
+<span class="key">@media</span> (<span class="prop">min-width</span>: <span class="num">768px</span>)  { <span class="com">/* md */</span>
+  <span class="sel">.grid</span> { <span class="prop">columns</span>: <span class="num">3</span>; }
+}
+<span class="key">@media</span> (<span class="prop">min-width</span>: <span class="num">1024px</span>) { <span class="com">/* lg */</span>
+  <span class="sel">.grid</span> { <span class="prop">columns</span>: <span class="num">4</span>; }
+}
+
+<span class="com">/* Range syntax (modern) */</span>
+<span class="key">@media</span> (<span class="num">600px</span> &lt;= <span class="prop">width</span> &lt; <span class="num">1024px</span>) { ... }
+
+<span class="com">/* Combined conditions */</span>
+<span class="key">@media</span> (<span class="prop">min-width</span>: <span class="num">768px</span>) <span class="key">and</span>
+       (<span class="prop">orientation</span>: <span class="val">landscape</span>) { ... }
+
+<span class="com">/* Other features */</span>
+<span class="key">@media</span> (<span class="prop">prefers-color-scheme</span>: <span class="val">dark</span>)   { ... }
+<span class="key">@media</span> (<span class="prop">prefers-reduced-motion</span>: <span class="val">reduce</span>){ ... }
+<span class="key">@media</span> (<span class="prop">hover</span>: <span class="val">hover</span>)                 { ... }
+<span class="key">@media</span> (<span class="prop">display-mode</span>: <span class="val">standalone</span>)   { ... }
+<span class="key">@media</span> print                          { ... }</pre>
+    </div>
+    <div class="card ca4">
+      <div class="card-label">container queries</div>
+      <h3>@container Queries (Modern)</h3>
+      <pre><span class="com">/* Set container context */</span>
+<span class="sel">.wrapper</span> {
+  <span class="prop">container-type</span>: <span class="val">inline-size</span>;
+  <span class="prop">container-name</span>: <span class="val">card</span>;
+}
+
+<span class="com">/* Style based on container width */</span>
+<span class="key">@container</span> card (<span class="prop">min-width</span>: <span class="num">400px</span>) {
+  <span class="sel">.title</span> { <span class="prop">font-size</span>: <span class="num">1.5rem</span>; }
+}
+
+<span class="key">@container</span> (<span class="prop">width</span> > <span class="num">600px</span>) {
+  <span class="sel">.card</span> { <span class="prop">flex-direction</span>: <span class="val">row</span>; }
+}
+
+<span class="com">/* Container query units */</span>
+<span class="com">/* cqw = 1% of container width */</span>
+<span class="prop">font-size</span>: <span class="num">3cqw</span>;
+<span class="prop">width</span>: <span class="num">50cqi</span>; <span class="com">/* inline-size */</span></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 15 PSEUDO ELEMENTS -->
+<section class="section" id="pseudo">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">15 /</span>
+    <h2 class="section-title">Pseudo-classes &amp; <span>Elements</span></h2>
+  </div>
+  <div class="grid grid-3">
+    <div class="card ca5">
+      <div class="card-label">user action pseudo-classes</div>
+      <h3>State Pseudo-classes</h3>
+      <pre><span class="sel">a</span><span class="key">:link</span>         { } <span class="com">/* unvisited */</span>
+<span class="sel">a</span><span class="key">:visited</span>      { }
+<span class="sel">a</span><span class="key">:hover</span>        { } <span class="com">/* mouse over */</span>
+<span class="sel">a</span><span class="key">:active</span>       { } <span class="com">/* being clicked */</span>
+<span class="sel">a</span><span class="key">:focus</span>        { }
+<span class="sel">a</span><span class="key">:focus-visible</span>{ } <span class="com">/* keyboard focus */</span>
+<span class="sel">a</span><span class="key">:focus-within</span> { } <span class="com">/* child focused */</span>
+
+<span class="sel">input</span><span class="key">:checked</span>   { }
+<span class="sel">input</span><span class="key">:disabled</span>  { }
+<span class="sel">input</span><span class="key">:enabled</span>   { }
+<span class="sel">input</span><span class="key">:required</span>  { }
+<span class="sel">input</span><span class="key">:optional</span>  { }
+<span class="sel">input</span><span class="key">:valid</span>     { }
+<span class="sel">input</span><span class="key">:invalid</span>   { }
+<span class="sel">input</span><span class="key">:read-only</span> { }
+<span class="sel">input</span><span class="key">:placeholder-shown</span> { }</pre>
+    </div>
+    <div class="card ca3">
+      <div class="card-label">::pseudo-elements</div>
+      <h3>Pseudo-elements</h3>
+      <pre><span class="sel">p</span><span class="key">::before</span> {
+  <span class="prop">content</span>: <span class="val">"★ "</span>;
+  <span class="prop">color</span>: <span class="val">gold</span>;
+}
+<span class="sel">p</span><span class="key">::after</span> {
+  <span class="prop">content</span>: <span class="val">""</span>;
+  <span class="prop">display</span>: <span class="val">block</span>;
+}
+
+<span class="sel">p</span><span class="key">::first-letter</span> { <span class="prop">font-size</span>: <span class="num">2em</span>; }
+<span class="sel">p</span><span class="key">::first-line</span>   { <span class="prop">font-weight</span>: <span class="val">bold</span>; }
+<span class="sel">::selection</span>     { <span class="prop">background</span>: <span class="val">purple</span>; }
+<span class="sel">::placeholder</span>   { <span class="prop">color</span>: <span class="val">gray</span>; }
+<span class="sel">::marker</span>        { <span class="prop">color</span>: <span class="val">red</span>; }
+<span class="sel">::backdrop</span>      { <span class="prop">background</span>: <span class="val">black</span>; }
+<span class="sel">::scroll-marker</span> { } <span class="com">/* new 2024 */</span></pre>
+    </div>
+    <div class="card ca">
+      <div class="card-label">modern at-rules</div>
+      <h3>Important @-rules</h3>
+      <pre><span class="com">/* Variables */</span>
+<span class="key">@property</span> --angle {
+  <span class="prop">syntax</span>: <span class="val">"&lt;angle&gt;"</span>;
+  <span class="prop">initial-value</span>: <span class="num">0deg</span>;
+  <span class="prop">inherits</span>: <span class="val">false</span>;
+}
+
+<span class="com">/* Scoped styles */</span>
+<span class="key">@scope</span> (<span class="sel">.card</span>) {
+  <span class="sel">h2</span> { <span class="prop">color</span>: <span class="val">blue</span>; }
+}
+
+<span class="com">/* Supports query */</span>
+<span class="key">@supports</span> (<span class="prop">display</span>: <span class="val">grid</span>) {
+  <span class="sel">.container</span> { <span class="prop">display</span>: <span class="val">grid</span>; }
+}
+<span class="key">@supports</span> <span class="key">not</span> (<span class="prop">gap</span>: <span class="num">1rem</span>) {
+  <span class="sel">.flex</span> { <span class="prop">margin</span>: <span class="num">1rem</span>; }
+}
+
+<span class="com">/* Color scheme */</span>
+<span class="key">@media</span> (<span class="prop">prefers-color-scheme</span>: <span class="val">dark</span>) {
+  <span class="sel">:root</span> {
+    <span class="prop">--bg</span>: <span class="val">#111</span>;
+    <span class="prop">--text</span>: <span class="val">#eee</span>;
+  }
+}</pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 16 MISC / ADVANCED -->
+<section class="section" id="misc">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">16 /</span>
+    <h2 class="section-title">Advanced &amp; <span>Misc</span></h2>
+  </div>
+  <div class="grid grid-3">
+    <div class="card ca4">
+      <div class="card-label">borders & shadows</div>
+      <h3>Borders, Radius, Shadows</h3>
+      <pre><span class="com">/* Borders */</span>
+<span class="prop">border</span>: <span class="num">2px</span> <span class="val">solid</span> <span class="val">red</span>;
+<span class="prop">border</span>: <span class="num">1px</span> <span class="val">dashed</span> | <span class="val">dotted</span> | <span class="val">double</span>;
+<span class="prop">outline</span>: <span class="num">2px</span> <span class="val">solid</span> <span class="val">blue</span>;
+<span class="prop">outline-offset</span>: <span class="num">4px</span>;
+
+<span class="com">/* Border radius */</span>
+<span class="prop">border-radius</span>: <span class="num">8px</span>;
+<span class="prop">border-radius</span>: <span class="num">50%</span>;    <span class="com">/* circle */</span>
+<span class="prop">border-radius</span>: <span class="num">1rem</span> <span class="num">0</span>;
+<span class="prop">border-radius</span>: <span class="num">4px</span> <span class="num">8px</span> <span class="num">12px</span> <span class="num">16px</span>;
+
+<span class="com">/* Box shadow */</span>
+<span class="prop">box-shadow</span>: <span class="num">4px</span> <span class="num">4px</span> <span class="num">10px</span> <span class="val">rgba(0,0,0,.2)</span>;
+<span class="prop">box-shadow</span>: <span class="num">0</span> <span class="num">0</span> <span class="num">0</span> <span class="num">3px</span> <span class="val">blue</span>; <span class="com">/* ring */</span>
+<span class="prop">box-shadow</span>: <span class="val">inset</span> <span class="num">0</span> <span class="num">2px</span> <span class="num">4px</span> <span class="val">rgba(0,0,0,.1)</span>;
+
+<span class="com">/* Multiple shadows */</span>
+<span class="prop">box-shadow</span>:
+  <span class="num">0</span> <span class="num">1px</span> <span class="num">3px</span> <span class="val">rgba(0,0,0,.1)</span>,
+  <span class="num">0</span> <span class="num">10px</span> <span class="num">20px</span> <span class="val">rgba(0,0,0,.2)</span>;</pre>
+    </div>
+    <div class="card ca2">
+      <div class="card-label">filters & effects</div>
+      <h3>Filter &amp; Mix-blend-mode</h3>
+      <pre><span class="com">/* CSS Filters */</span>
+<span class="prop">filter</span>: <span class="val">blur</span>(<span class="num">4px</span>);
+<span class="prop">filter</span>: <span class="val">brightness</span>(<span class="num">1.5</span>);
+<span class="prop">filter</span>: <span class="val">contrast</span>(<span class="num">2</span>);
+<span class="prop">filter</span>: <span class="val">grayscale</span>(<span class="num">100%</span>);
+<span class="prop">filter</span>: <span class="val">sepia</span>(<span class="num">50%</span>);
+<span class="prop">filter</span>: <span class="val">hue-rotate</span>(<span class="num">90deg</span>);
+<span class="prop">filter</span>: <span class="val">saturate</span>(<span class="num">2</span>);
+<span class="prop">filter</span>: <span class="val">invert</span>(<span class="num">100%</span>);
+<span class="prop">filter</span>: <span class="val">drop-shadow</span>(<span class="num">4px</span> <span class="num">4px</span> <span class="val">red</span>);
+
+<span class="com">/* Backdrop filter */</span>
+<span class="prop">backdrop-filter</span>: <span class="val">blur</span>(<span class="num">10px</span>)
+                  <span class="val">brightness</span>(<span class="num">0.8</span>);
+
+<span class="com">/* Blend modes */</span>
+<span class="prop">mix-blend-mode</span>: <span class="val">multiply</span>;
+<span class="prop">mix-blend-mode</span>: <span class="val">screen</span>;
+<span class="prop">mix-blend-mode</span>: <span class="val">overlay</span>;
+<span class="prop">background-blend-mode</span>: <span class="val">multiply</span>;</pre>
+    </div>
+    <div class="card ca3">
+      <div class="card-label">scroll & cursor</div>
+      <h3>Scroll &amp; Interaction</h3>
+      <pre><span class="com">/* Smooth scroll */</span>
+<span class="sel">html</span> { <span class="prop">scroll-behavior</span>: <span class="val">smooth</span>; }
+
+<span class="com">/* Scroll snap */</span>
+<span class="sel">.container</span> {
+  <span class="prop">scroll-snap-type</span>: <span class="val">x mandatory</span>;
+  <span class="prop">overflow-x</span>: <span class="val">scroll</span>;
+}
+<span class="sel">.slide</span> {
+  <span class="prop">scroll-snap-align</span>: <span class="val">start</span>;
+}
+
+<span class="com">/* Scroll padding (fixed header offset) */</span>
+<span class="sel">html</span> { <span class="prop">scroll-padding-top</span>: <span class="num">80px</span>; }
+
+<span class="com">/* Cursor */</span>
+<span class="prop">cursor</span>: <span class="val">pointer</span> | <span class="val">default</span> | <span class="val">none</span>;
+<span class="prop">cursor</span>: <span class="val">grab</span> | <span class="val">grabbing</span>;
+<span class="prop">cursor</span>: <span class="val">crosshair</span> | <span class="val">text</span> | <span class="val">wait</span>;
+<span class="prop">cursor</span>: <span class="val">url</span>(<span class="txt">'cursor.png'</span>), <span class="val">auto</span>;
+
+<span class="com">/* Pointer events */</span>
+<span class="prop">pointer-events</span>: <span class="val">none</span>; <span class="com">/* no interactions */</span>
+<span class="prop">user-select</span>: <span class="val">none</span>;   <span class="com">/* no text select */</span>
+<span class="prop">touch-action</span>: <span class="val">pan-y</span>; <span class="com">/* scroll only y */</span></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer>
+  Built for developers · <span>CSS {}</span> Ultimate Cheat Sheet · 2025
+</footer>
+
+</body>
+</html>

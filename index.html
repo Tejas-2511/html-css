@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate HTML & CSS Guide</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+<h1>Ultimate HTML & CSS Guide</h1>
+<p>Everything a beginner-to-intermediate web developer should know.</p>
+</header>
+
+<nav>
+<a href="#html">HTML</a>
+<a href="#css">CSS</a>
+<a href="#layout">Layout</a>
+<a href="#responsive">Responsive</a>
+<a href="#advanced">Advanced</a>
+</nav>
+
+<main>
+<section id="html">
+<h2>HTML Essentials</h2>
+<h3>Structure</h3>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;/head&gt;
+&lt;body&gt;&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<h3>Important Tags</h3>
+<ul>
+<li>h1-h6, p, a, img</li>
+<li>ul, ol, li</li>
+<li>table, tr, th, td</li>
+<li>form, input, button, select, textarea</li>
+<li>div, span</li>
+</ul>
+
+<h3>Semantic HTML</h3>
+<p>header, nav, main, section, article, aside, footer</p>
+
+<h3>Accessibility</h3>
+<ul>
+<li>alt attributes on images</li>
+<li>label elements for forms</li>
+<li>Proper heading hierarchy</li>
+</ul>
+</section>
+
+<section id="css">
+<h2>CSS Fundamentals</h2>
+
+<div class="grid">
+<div class="card">
+<h3>Selectors</h3>
+<p>Element, Class, ID, Universal</p>
+</div>
+
+<div class="card">
+<h3>Specificity</h3>
+<p>Inline > ID > Class > Element</p>
+</div>
+
+<div class="card">
+<h3>Colors</h3>
+<p>Named, Hex, RGB, RGBA, HSL</p>
+</div>
+
+<div class="card">
+<h3>Units</h3>
+<p>px, %, rem, em, vw, vh</p>
+</div>
+</div>
+
+<h3>Box Model</h3>
+<div class="box-model">
+Margin
+<div>
+Border
+<div>
+Padding
+<div>Content</div>
+</div>
+</div>
+</div>
+
+<h3>Common Properties</h3>
+<pre>
+color
+background
+width
+height
+margin
+padding
+border
+font-size
+font-family
+text-align
+</pre>
+</section>
+
+<section id="layout">
+<h2>Layout Mastery</h2>
+
+<h3>Display Types</h3>
+<ul>
+<li>block</li>
+<li>inline</li>
+<li>inline-block</li>
+<li>none</li>
+</ul>
+
+<h3>Positioning</h3>
+<ul>
+<li>static</li>
+<li>relative</li>
+<li>absolute</li>
+<li>fixed</li>
+<li>sticky</li>
+</ul>
+
+<h3>Flexbox</h3>
+<pre>
+display:flex;
+justify-content:center;
+align-items:center;
+gap:1rem;
+</pre>
+
+<div class="demo-flex">
+<div>A</div>
+<div>B</div>
+<div>C</div>
+</div>
+
+<h3>Grid</h3>
+<pre>
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+</pre>
+
+<div class="demo-grid">
+<div>1</div>
+<div>2</div>
+<div>3</div>
+</div>
+</section>
+
+<section id="responsive">
+<h2>Responsive Design</h2>
+
+<ul>
+<li>Viewport Meta Tag</li>
+<li>Media Queries</li>
+<li>Flexible Units</li>
+<li>Mobile First Design</li>
+</ul>
+
+<pre>
+@media(max-width:768px){
+  ...
+}
+</pre>
+
+<h3>Viewport Units</h3>
+<p>vw = viewport width</p>
+<p>vh = viewport height</p>
+</section>
+
+<section id="advanced">
+<h2>Advanced Topics</h2>
+
+<h3>Pseudo Classes</h3>
+<pre>
+:hover
+:focus
+:active
+:first-child
+:last-child
+:nth-child()
+</pre>
+
+<h3>Pseudo Elements</h3>
+<pre>
+::before
+::after
+::first-letter
+::first-line
+::selection
+</pre>
+
+<h3>Overflow</h3>
+<pre>
+visible
+hidden
+scroll
+auto
+</pre>
+
+<h3>z-index</h3>
+<p>Controls stacking order.</p>
+
+<h3>Transitions</h3>
+<pre>
+transition:0.3s;
+</pre>
+
+<h3>Transforms</h3>
+<pre>
+scale()
+rotate()
+translate()
+</pre>
+
+<h3>CSS Variables</h3>
+<pre>
+:root{
+ --primary:#2563eb;
+}
+</pre>
+
+<h3>Developer Tools Checklist</h3>
+<ul>
+<li>Inspect Element</li>
+<li>Computed Styles</li>
+<li>Responsive Mode</li>
+<li>Network Tab</li>
+<li>Console</li>
+</ul>
+</section>
+
+<section>
+<h2>Must Know Before JavaScript</h2>
+<ol>
+<li>Semantic HTML</li>
+<li>Forms</li>
+<li>Box Model</li>
+<li>Specificity</li>
+<li>Flexbox</li>
+<li>Grid</li>
+<li>Positioning</li>
+<li>Pseudo Classes</li>
+<li>Responsive Design</li>
+<li>Developer Tools</li>
+</ol>
+</section>
+</main>
+
+<footer>
+<p>HTML + CSS Roadmap Complete</p>
+</footer>
+</body>
+</html>

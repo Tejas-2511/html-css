@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML Ultimate Cheat Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #ff6b35;
+    --accent2: #ffd166;
+    --accent3: #06d6a0;
+    --accent4: #118ab2;
+    --accent5: #ef476f;
+    --text: #e8e8f0;
+    --muted: #8888a0;
+    --code-bg: #0d0d15;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 4rem 2rem;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,107,53,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 10% 80%, rgba(6,214,160,0.07) 0%, transparent 60%),
+      var(--bg);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,107,53,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,107,53,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--accent);
+    padding: 0.35rem 1rem;
+    display: inline-block;
+  }
+  .hero h1 {
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 span.hl { color: var(--accent); }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 500px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.8;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+  /* LAYOUT */
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 5rem 0; border-top: 1px solid var(--border); }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .section-title span { color: var(--accent); }
+
+  /* GRID */
+  .grid { display: grid; gap: 1.5rem; }
+  .grid-2 { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .grid-4 { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1.75rem;
+    position: relative;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card-accent { border-left: 3px solid var(--accent); }
+  .card-accent2 { border-left: 3px solid var(--accent2); }
+  .card-accent3 { border-left: 3px solid var(--accent3); }
+  .card-accent4 { border-left: 3px solid var(--accent4); }
+  .card-accent5 { border-left: 3px solid var(--accent5); }
+
+  .card-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card-label::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .card-accent2 .card-label::before { background: var(--accent2); }
+  .card-accent3 .card-label::before { background: var(--accent3); }
+  .card-accent4 .card-label::before { background: var(--accent4); }
+  .card-accent5 .card-label::before { background: var(--accent5); }
+
+  .card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* CODE */
+  code, pre {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    line-height: 1.7;
+    margin: 0.75rem 0 0;
+  }
+  .tag { color: var(--accent); }
+  .attr { color: var(--accent2); }
+  .val { color: var(--accent3); }
+  .com { color: var(--muted); font-style: italic; }
+  .txt { color: var(--text); }
+
+  /* INLINE CODE */
+  .ic {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 0.1em 0.4em;
+    border-radius: 2px;
+    color: var(--accent2);
+  }
+
+  /* ATTR TABLE */
+  .attr-table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
+  .attr-table th {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .attr-table td {
+    font-size: 0.82rem;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid rgba(42,42,58,0.5);
+    vertical-align: top;
+  }
+  .attr-table td:first-child { font-family: 'Space Mono', monospace; color: var(--accent2); }
+  .attr-table td:last-child { color: var(--muted); font-size: 0.78rem; }
+  .attr-table tr:last-child td { border-bottom: none; }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.2em 0.6em;
+    border-radius: 2px;
+    margin: 0.15rem;
+    letter-spacing: 0.05em;
+  }
+  .badge-orange { background: rgba(255,107,53,0.15); color: var(--accent); border: 1px solid rgba(255,107,53,0.3); }
+  .badge-yellow { background: rgba(255,209,102,0.15); color: var(--accent2); border: 1px solid rgba(255,209,102,0.3); }
+  .badge-green  { background: rgba(6,214,160,0.12); color: var(--accent3); border: 1px solid rgba(6,214,160,0.3); }
+  .badge-blue   { background: rgba(17,138,178,0.15); color: var(--accent4); border: 1px solid rgba(17,138,178,0.3); }
+  .badge-red    { background: rgba(239,71,111,0.12); color: var(--accent5); border: 1px solid rgba(239,71,111,0.3); }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+  /* TAG ANATOMY */
+  .anatomy {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 2rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+  }
+  .anatomy-line { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .anatomy-arrow { color: var(--muted); font-size: 0.75rem; }
+  .anatomy-label { color: var(--muted); font-size: 0.7rem; }
+
+  /* BIG TAG */
+  .big-code { font-size: clamp(1rem, 2.5vw, 1.4rem); }
+
+  /* FULL WIDTH CARD */
+  .card-full { grid-column: 1 / -1; }
+
+  /* TAG LIST */
+  .tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+
+  /* NAV */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    overflow-x: auto;
+  }
+  .nav-brand {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--accent);
+    white-space: nowrap;
+    letter-spacing: -0.02em;
+  }
+  .nav a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-decoration: none;
+    white-space: nowrap;
+    letter-spacing: 0.1em;
+    transition: color 0.2s;
+  }
+  .nav a:hover { color: var(--accent); }
+
+  /* VISUAL DEMO BOX */
+  .demo-box {
+    background: var(--surface2);
+    border: 1px dashed var(--border);
+    border-radius: 2px;
+    padding: 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+  }
+  .demo-box h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+  .demo-box h2 { font-size: 1.2rem; margin-bottom: 0.25rem; color: var(--accent2); }
+  .demo-box h3 { font-size: 1rem; margin-bottom: 0.25rem; color: var(--accent3); }
+  .demo-box h4 { font-size: 0.9rem; color: var(--accent4); }
+  .demo-box p  { color: var(--muted); font-size: 0.82rem; }
+  .demo-box a  { color: var(--accent); }
+  .demo-box strong { font-weight: 700; color: var(--accent2); }
+  .demo-box em { font-style: italic; color: var(--accent3); }
+  .demo-box mark { background: rgba(255,209,102,0.25); color: var(--accent2); padding: 0 0.2em; }
+  .demo-box code { background: var(--code-bg); padding: 0.1em 0.3em; font-family: 'Space Mono', monospace; font-size: 0.78rem; }
+  .demo-box table { border-collapse: collapse; width: 100%; font-size: 0.78rem; }
+  .demo-box table th, .demo-box table td { border: 1px solid var(--border); padding: 0.3rem 0.6rem; }
+  .demo-box table th { background: var(--surface); color: var(--accent2); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+  footer span { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">Ultimate Reference</div>
+  <h1>HTML<br><span class="hl">Cheat</span><br>Sheet</h1>
+  <p class="hero-sub">Everything a developer needs to know about HTML — structure, semantics, attributes, forms, media, accessibility &amp; more.</p>
+  <div class="scroll-hint">↓ SCROLL TO EXPLORE</div>
+</div>
+
+<nav class="nav">
+  <div class="nav-brand">&lt;HTML/&gt;</div>
+  <a href="#anatomy">Anatomy</a>
+  <a href="#doctype">Document</a>
+  <a href="#text">Text</a>
+  <a href="#lists">Lists</a>
+  <a href="#links">Links</a>
+  <a href="#images">Media</a>
+  <a href="#tables">Tables</a>
+  <a href="#forms">Forms</a>
+  <a href="#semantic">Semantic</a>
+  <a href="#meta">Meta</a>
+  <a href="#attributes">Attributes</a>
+  <a href="#misc">Misc</a>
+</nav>
+
+<!-- ── 01 TAG ANATOMY ──────────────────────────────── -->
+<section class="section" id="anatomy">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">01 /</span>
+    <h2 class="section-title">Tag <span>Anatomy</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card card-full card-accent">
+      <div class="card-label">structure</div>
+      <h3>Anatomy of an HTML Element</h3>
+      <div class="anatomy">
+        <div class="anatomy-line big-code">
+          <span class="tag">&lt;</span><span class="tag">a</span>
+          <span class="attr"> href</span><span class="txt">=</span><span class="val">"https://example.com"</span>
+          <span class="attr"> target</span><span class="txt">=</span><span class="val">"_blank"</span>
+          <span class="tag">&gt;</span>
+          <span class="txt">Click me</span>
+          <span class="tag">&lt;/a&gt;</span>
+        </div>
+        <div style="display:flex;gap:3rem;flex-wrap:wrap;margin-top:0.5rem">
+          <div><div class="anatomy-label">▲ Opening tag</div></div>
+          <div><div class="anatomy-label" style="color:var(--accent2)">▲ Attribute name</div></div>
+          <div><div class="anatomy-label" style="color:var(--accent3)">▲ Attribute value</div></div>
+          <div><div class="anatomy-label">▲ Content</div></div>
+          <div><div class="anatomy-label">▲ Closing tag</div></div>
+        </div>
+      </div>
+      <div style="margin-top:1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div>
+          <div class="card-label" style="margin-bottom:0.5rem">void / self-closing</div>
+          <pre><span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"img.png"</span> <span class="attr">alt</span>=<span class="val">"desc"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;br&gt;</span>  <span class="tag">&lt;hr&gt;</span>  <span class="tag">&lt;input&gt;</span>
+<span class="tag">&lt;meta&gt;</span>  <span class="tag">&lt;link&gt;</span></pre>
+        </div>
+        <div>
+          <div class="card-label" style="margin-bottom:0.5rem">comments</div>
+          <pre><span class="com">&lt;!-- This is a comment --&gt;</span>
+<span class="com">&lt;!--
+  Multi-line comment
+--&gt;</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ── 02 DOCUMENT STRUCTURE ──────────────────────── -->
+<section class="section" id="doctype">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">02 /</span>
+    <h2 class="section-title">Document <span>Structure</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card card-accent">
+      <div class="card-label">boilerplate</div>
+      <h3>Full HTML5 Template</h3>
+      <pre><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="val">"en"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"viewport"</span>
+        <span class="attr">content</span>=<span class="val">"width=device-width,
+        initial-scale=1.0"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;title&gt;</span>Page Title<span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"stylesheet"</span> <span class="attr">href</span>=<span class="val">"style.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+
+  <span class="com">&lt;!-- content here --&gt;</span>
+
+  <span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"app.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></pre>
+    </div>
+    <div class="card card-accent2">
+      <div class="card-label">head elements</div>
+      <h3>Common &lt;head&gt; Tags</h3>
+      <table class="attr-table">
+        <tr><th>Tag</th><th>Purpose</th></tr>
+        <tr><td>&lt;title&gt;</td><td>Browser tab text + SEO</td></tr>
+        <tr><td>&lt;meta charset&gt;</td><td>Character encoding (UTF-8)</td></tr>
+        <tr><td>&lt;meta viewport&gt;</td><td>Mobile responsiveness</td></tr>
+        <tr><td>&lt;meta description&gt;</td><td>SEO snippet text</td></tr>
+        <tr><td>&lt;link rel=stylesheet&gt;</td><td>External CSS</td></tr>
+        <tr><td>&lt;link rel=icon&gt;</td><td>Favicon</td></tr>
+        <tr><td>&lt;script&gt;</td><td>JS (add defer or async)</td></tr>
+        <tr><td>&lt;style&gt;</td><td>Inline CSS block</td></tr>
+        <tr><td>&lt;base&gt;</td><td>Base URL for all links</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ── 03 TEXT CONTENT ─────────────────────────────── -->
+<section class="section" id="text">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">03 /</span>
+    <h2 class="section-title">Text <span>Content</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card card-accent3">
+      <div class="card-label">headings</div>
+      <h3>Headings h1 – h6</h3>
+      <pre><span class="tag">&lt;h1&gt;</span>Main Title<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;h2&gt;</span>Section<span class="tag">&lt;/h2&gt;</span>
+<span class="tag">&lt;h3&gt;</span>Sub-section<span class="tag">&lt;/h3&gt;</span>
+<span class="tag">&lt;h4&gt;</span>Sub-sub<span class="tag">&lt;/h4&gt;</span>
+<span class="tag">&lt;h5&gt;</span>Minor heading<span class="tag">&lt;/h5&gt;</span>
+<span class="tag">&lt;h6&gt;</span>Smallest<span class="tag">&lt;/h6&gt;</span></pre>
+      <div class="demo-box" style="margin-top:0.75rem">
+        <h1>h1 Heading</h1>
+        <h2>h2 Heading</h2>
+        <h3>h3 Heading</h3>
+        <h4>h4 Heading</h4>
+      </div>
+    </div>
+    <div class="card card-accent">
+      <div class="card-label">inline text</div>
+      <h3>Text Formatting Elements</h3>
+      <table class="attr-table">
+        <tr><th>Tag</th><th>Result</th><th>Meaning</th></tr>
+        <tr><td>&lt;strong&gt;</td><td><strong>bold</strong></td><td>Importance</td></tr>
+        <tr><td>&lt;em&gt;</td><td><em>italic</em></td><td>Emphasis</td></tr>
+        <tr><td>&lt;mark&gt;</td><td><mark style="background:rgba(255,209,102,0.3);color:var(--accent2)">highlight</mark></td><td>Marked text</td></tr>
+        <tr><td>&lt;code&gt;</td><td><code>code</code></td><td>Inline code</td></tr>
+        <tr><td>&lt;pre&gt;</td><td>preformatted</td><td>Preserves whitespace</td></tr>
+        <tr><td>&lt;abbr&gt;</td><td>abbreviation</td><td>title= attr for tooltip</td></tr>
+        <tr><td>&lt;del&gt;</td><td><del>deleted</del></td><td>Strikethrough</td></tr>
+        <tr><td>&lt;ins&gt;</td><td><ins>inserted</ins></td><td>Underline</td></tr>
+        <tr><td>&lt;sup&gt;</td><td>E=mc<sup>2</sup></td><td>Superscript</td></tr>
+        <tr><td>&lt;sub&gt;</td><td>H<sub>2</sub>O</td><td>Subscript</td></tr>
+        <tr><td>&lt;small&gt;</td><td><small>fine print</small></td><td>Smaller text</td></tr>
+        <tr><td>&lt;kbd&gt;</td><td><kbd style="border:1px solid var(--border);padding:0 4px;font-size:0.78rem">Ctrl</kbd></td><td>Keyboard key</td></tr>
+        <tr><td>&lt;q&gt;</td><td><q>inline quote</q></td><td>Short quotation</td></tr>
+        <tr><td>&lt;cite&gt;</td><td><cite>Book Title</cite></td><td>Citation</td></tr>
+        <tr><td>&lt;br&gt;</td><td>line↵break</td><td>Line break (void)</td></tr>
+      </table>
+    </div>
+    <div class="card card-accent4">
+      <div class="card-label">block text</div>
+      <h3>Block Text Elements</h3>
+      <pre><span class="tag">&lt;p&gt;</span>Paragraph text<span class="tag">&lt;/p&gt;</span>
+
+<span class="tag">&lt;blockquote</span> <span class="attr">cite</span>=<span class="val">"url"</span><span class="tag">&gt;</span>
+  Long quotation...
+<span class="tag">&lt;/blockquote&gt;</span>
+
+<span class="tag">&lt;pre&gt;&lt;code&gt;</span>
+  // preformatted code block
+  const x = 42;
+<span class="tag">&lt;/code&gt;&lt;/pre&gt;</span>
+
+<span class="tag">&lt;address&gt;</span>
+  123 Main St, City
+<span class="tag">&lt;/address&gt;</span>
+
+<span class="tag">&lt;hr&gt;</span> <span class="com">&lt;!-- thematic break --&gt;</span></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ── 04 LISTS ────────────────────────────────────── -->
+<section class="section" id="lists">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">04 /</span>
+    <h2 class="section-title">Lists &amp; <span>Nesting</span></h2>
+  </div>
+  <div class="grid grid-3">
+    <div class="card card-accent">
+      <div class="card-label">unordered</div>
+      <h3>Bulleted List <span class="ic">&lt;ul&gt;</span></h3>
+      <pre><span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Item one<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Item two<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Item three<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></pre>
+    </div>
+    <div class="card card-accent2">
+      <div class="card-label">ordered</div>
+      <h3>Numbered List <span class="ic">&lt;ol&gt;</span></h3>
+      <pre><span class="tag">&lt;ol</span> <span class="attr">type</span>=<span class="val">"1"</span> <span class="attr">start</span>=<span class="val">"1"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;li&gt;</span>First<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Second<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ol&gt;</span>
+<span class="com">&lt;!-- type: 1,A,a,I,i --&gt;</span></pre>
+    </div>
+    <div class="card card-accent3">
+      <div class="card-label">description</div>
+      <h3>Definition List <span class="ic">&lt;dl&gt;</span></h3>
+      <pre><span class="tag">&lt;dl&gt;</span>
+  <span class="tag">&lt;dt&gt;</span>HTML<span class="tag">&lt;/dt&gt;</span>
+  <span class="tag">&lt;dd&gt;</span>HyperText Markup
+      Language<span class="tag">&lt;/dd&gt;</span>
+  <span class="tag">&lt;dt&gt;</span>CSS<span class="tag">&lt;/dt&gt;</span>
+  <span class="tag">&lt;dd&gt;</span>Cascading Style
+      Sheets<span class="tag">&lt;/dd&gt;</span>
+<span class="tag">&lt;/dl&gt;</span></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ── 05 LINKS ────────────────────────────────────── -->
+<section class="section" id="links">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">05 /</span>
+    <h2 class="section-title">Links &amp; <span>Navigation</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card card-accent5">
+      <div class="card-label">anchor tag</div>
+      <h3>All Link Types</h3>
+      <pre><span class="com">&lt;!-- External --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://example.com"</span>
+   <span class="attr">target</span>=<span class="val">"_blank"</span>
+   <span class="attr">rel</span>=<span class="val">"noopener noreferrer"</span><span class="tag">&gt;</span>
+  External Link
+<span class="tag">&lt;/a&gt;</span>
+
+<span class="com">&lt;!-- Internal --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"/about"</span><span class="tag">&gt;</span>About<span class="tag">&lt;/a&gt;</span>
+
+<span class="com">&lt;!-- Anchor / Jump --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"#section-id"</span><span class="tag">&gt;</span>Jump<span class="tag">&lt;/a&gt;</span>
+
+<span class="com">&lt;!-- Email --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"mailto:hi@example.com"</span><span class="tag">&gt;</span>
+  Email Us
+<span class="tag">&lt;/a&gt;</span>
+
+<span class="com">&lt;!-- Phone --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"tel:+1234567890"</span><span class="tag">&gt;</span>Call<span class="tag">&lt;/a&gt;</span>
+
+<span class="com">&lt;!-- Download --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"file.pdf"</span> <span class="attr">download</span>=<span class="val">"name"</span><span class="tag">&gt;</span>
+  Download PDF
+<span class="tag">&lt;/a&gt;</span></pre>
+    </div>
+    <div class="card card-accent4">
+      <div class="card-label">target values</div>
+      <h3>target &amp; rel Attributes</h3>
+      <table class="attr-table">
+        <tr><th>Value</th><th>Behavior</th></tr>
+        <tr><td>_self</td><td>Same tab (default)</td></tr>
+        <tr><td>_blank</td><td>New tab/window</td></tr>
+        <tr><td>_parent</td><td>Parent frame</td></tr>
+        <tr><td>_top</td><td>Full window</td></tr>
+      </table>
+      <hr class="divider">
+      <table class="attr-table">
+        <tr><th>rel value</th><th>Purpose</th></tr>
+        <tr><td>noopener</td><td>Prevents new tab accessing opener</td></tr>
+        <tr><td>noreferrer</td><td>Hides referrer header</td></tr>
+        <tr><td>nofollow</td><td>Tell crawlers not to follow</td></tr>
+        <tr><td>alternate</td><td>Alternate version of page</td></tr>
+        <tr><td>canonical</td><td>Preferred URL for SEO</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ── 06 IMAGES & MEDIA ───────────────────────────── -->
+<section class="section" id="images">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">06 /</span>
+    <h2 class="section-title">Images &amp; <span>Media</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card card-accent">
+      <div class="card-label">images</div>
+      <h3>img, figure, picture</h3>
+      <pre><span class="com">&lt;!-- Basic image --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"photo.jpg"</span>
+     <span class="attr">alt</span>=<span class="val">"Description"</span>
+     <span class="attr">width</span>=<span class="val">"800"</span>
+     <span class="attr">height</span>=<span class="val">"600"</span>
+     <span class="attr">loading</span>=<span class="val">"lazy"</span><span class="tag">&gt;</span>
+
+<span class="com">&lt;!-- With caption --&gt;</span>
+<span class="tag">&lt;figure&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"photo.jpg"</span> <span class="attr">alt</span>=<span class="val">"..."</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;figcaption&gt;</span>Caption<span class="tag">&lt;/figcaption&gt;</span>
+<span class="tag">&lt;/figure&gt;</span>
+
+<span class="com">&lt;!-- Responsive --&gt;</span>
+<span class="tag">&lt;picture&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">media</span>=<span class="val">"(max-width:600px)"</span>
+          <span class="attr">srcset</span>=<span class="val">"small.jpg"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"large.jpg"</span> <span class="attr">alt</span>=<span class="val">"..."</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/picture&gt;</span></pre>
+    </div>
+    <div class="card card-accent3">
+      <div class="card-label">audio / video</div>
+      <h3>Multimedia Elements</h3>
+      <pre><span class="com">&lt;!-- Video --&gt;</span>
+<span class="tag">&lt;video</span> <span class="attr">controls</span>
+       <span class="attr">width</span>=<span class="val">"640"</span>
+       <span class="attr">poster</span>=<span class="val">"thumb.jpg"</span>
+       <span class="attr">muted</span> <span class="attr">autoplay</span> <span class="attr">loop</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">src</span>=<span class="val">"movie.mp4"</span>
+          <span class="attr">type</span>=<span class="val">"video/mp4"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">src</span>=<span class="val">"movie.webm"</span>
+          <span class="attr">type</span>=<span class="val">"video/webm"</span><span class="tag">&gt;</span>
+  Fallback text for old browsers.
+<span class="tag">&lt;/video&gt;</span>
+
+<span class="com">&lt;!-- Audio --&gt;</span>
+<span class="tag">&lt;audio</span> <span class="attr">controls</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">src</span>=<span class="val">"sound.mp3"</span>
+          <span class="attr">type</span>=<span class="val">"audio/mpeg"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/audio&gt;</span>
+
+<span class="com">&lt;!-- Embed / iframe --&gt;</span>
+<span class="tag">&lt;iframe</span>
+  <span class="attr">src</span>=<span class="val">"https://example.com"</span>
+  <span class="attr">width</span>=<span class="val">"600"</span> <span class="attr">height</span>=<span class="val">"400"</span>
+  <span class="attr">title</span>=<span class="val">"Accessible title"</span>
+  <span class="attr">loading</span>=<span class="val">"lazy"</span><span class="tag">&gt;
+&lt;/iframe&gt;</span></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ── 07 TABLES ───────────────────────────────────── -->
+<section class="section" id="tables">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">07 /</span>
+    <h2 class="section-title"><span>Tables</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card card-accent2">
+      <div class="card-label">full table structure</div>
+      <h3>Semantic Table</h3>
+      <pre><span class="tag">&lt;table&gt;</span>
+  <span class="tag">&lt;caption&gt;</span>Monthly Sales<span class="tag">&lt;/caption&gt;</span>
+  <span class="tag">&lt;thead&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;th</span> <span class="attr">scope</span>=<span class="val">"col"</span><span class="tag">&gt;</span>Month<span class="tag">&lt;/th&gt;</span>
+      <span class="tag">&lt;th</span> <span class="attr">scope</span>=<span class="val">"col"</span><span class="tag">&gt;</span>Sales<span class="tag">&lt;/th&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/thead&gt;</span>
+  <span class="tag">&lt;tbody&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;td&gt;</span>January<span class="tag">&lt;/td&gt;</span>
+      <span class="tag">&lt;td&gt;</span>$10,000<span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/tbody&gt;</span>
+  <span class="tag">&lt;tfoot&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;td</span> <span class="attr">colspan</span>=<span class="val">"2"</span><span class="tag">&gt;</span>Total<span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/tfoot&gt;</span>
+<span class="tag">&lt;/table&gt;</span></pre>
+    </div>
+    <div class="card card-accent">
+      <div class="card-label">spanning & attributes</div>
+      <h3>Colspan / Rowspan</h3>
+      <pre><span class="com">&lt;!-- Span columns --&gt;</span>
+<span class="tag">&lt;td</span> <span class="attr">colspan</span>=<span class="val">"3"</span><span class="tag">&gt;</span>Spans 3 cols<span class="tag">&lt;/td&gt;</span>
+
+<span class="com">&lt;!-- Span rows --&gt;</span>
+<span class="tag">&lt;td</span> <span class="attr">rowspan</span>=<span class="val">"2"</span><span class="tag">&gt;</span>Spans 2 rows<span class="tag">&lt;/td&gt;</span>
+
+<span class="com">&lt;!-- Column group styling --&gt;</span>
+<span class="tag">&lt;colgroup&gt;</span>
+  <span class="tag">&lt;col</span> <span class="attr">style</span>=<span class="val">"width:40%"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;col</span> <span class="attr">style</span>=<span class="val">"width:60%"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/colgroup&gt;</span></pre>
+      <div class="demo-box">
+        <table>
+          <thead><tr><th>Name</th><th>Role</th><th>Score</th></tr></thead>
+          <tbody>
+            <tr><td>Alice</td><td>Dev</td><td>95</td></tr>
+            <tr><td>Bob</td><td>Design</td><td>88</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ── 08 FORMS ────────────────────────────────────── -->
+<section class="section" id="forms">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">08 /</span>
+    <h2 class="section-title">Forms &amp; <span>Inputs</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card card-accent5">
+      <div class="card-label">form structure</div>
+      <h3>Form Skeleton</h3>
+      <pre><span class="tag">&lt;form</span>
+  <span class="attr">action</span>=<span class="val">"/submit"</span>
+  <span class="attr">method</span>=<span class="val">"POST"</span>
+  <span class="attr">enctype</span>=<span class="val">"multipart/form-data"</span>
+  <span class="attr">novalidate</span><span class="tag">&gt;</span>
+
+  <span class="tag">&lt;fieldset&gt;</span>
+    <span class="tag">&lt;legend&gt;</span>User Info<span class="tag">&lt;/legend&gt;</span>
+
+    <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="val">"name"</span><span class="tag">&gt;</span>Name<span class="tag">&lt;/label&gt;</span>
+    <span class="tag">&lt;input</span>
+      <span class="attr">type</span>=<span class="val">"text"</span>
+      <span class="attr">id</span>=<span class="val">"name"</span>
+      <span class="attr">name</span>=<span class="val">"name"</span>
+      <span class="attr">placeholder</span>=<span class="val">"John Doe"</span>
+      <span class="attr">required</span>
+      <span class="attr">autocomplete</span>=<span class="val">"name"</span><span class="tag">&gt;</span>
+
+  <span class="tag">&lt;/fieldset&gt;</span>
+
+  <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="val">"submit"</span><span class="tag">&gt;</span>
+    Submit
+  <span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span></pre>
+    </div>
+    <div class="card card-accent4">
+      <div class="card-label">all input types</div>
+      <h3>Input type= Values</h3>
+      <div class="tag-list">
+        <span class="badge badge-orange">text</span>
+        <span class="badge badge-orange">password</span>
+        <span class="badge badge-orange">email</span>
+        <span class="badge badge-orange">number</span>
+        <span class="badge badge-orange">tel</span>
+        <span class="badge badge-orange">url</span>
+        <span class="badge badge-yellow">date</span>
+        <span class="badge badge-yellow">time</span>
+        <span class="badge badge-yellow">datetime-local</span>
+        <span class="badge badge-yellow">month</span>
+        <span class="badge badge-yellow">week</span>
+        <span class="badge badge-green">checkbox</span>
+        <span class="badge badge-green">radio</span>
+        <span class="badge badge-green">range</span>
+        <span class="badge badge-green">color</span>
+        <span class="badge badge-blue">file</span>
+        <span class="badge badge-blue">hidden</span>
+        <span class="badge badge-blue">image</span>
+        <span class="badge badge-red">submit</span>
+        <span class="badge badge-red">reset</span>
+        <span class="badge badge-red">button</span>
+        <span class="badge badge-red">search</span>
+      </div>
+      <hr class="divider">
+      <pre><span class="com">&lt;!-- Textarea --&gt;</span>
+<span class="tag">&lt;textarea</span> <span class="attr">rows</span>=<span class="val">"4"</span> <span class="attr">cols</span>=<span class="val">"50"</span><span class="tag">&gt;&lt;/textarea&gt;</span>
+
+<span class="com">&lt;!-- Select dropdown --&gt;</span>
+<span class="tag">&lt;select</span> <span class="attr">name</span>=<span class="val">"lang"</span> <span class="attr">multiple</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;optgroup</span> <span class="attr">label</span>=<span class="val">"Front-end"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"html"</span> <span class="attr">selected</span><span class="tag">&gt;</span>HTML<span class="tag">&lt;/option&gt;</span>
+    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"css"</span><span class="tag">&gt;</span>CSS<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;/optgroup&gt;</span>
+<span class="tag">&lt;/select&gt;</span>
+
+<span class="com">&lt;!-- Datalist autocomplete --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">list</span>=<span class="val">"fruits"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;datalist</span> <span class="attr">id</span>=<span class="val">"fruits"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"Apple"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"Banana"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/datalist&gt;</span></pre>
+    </div>
+    <div class="card card-accent3">
+      <div class="card-label">validation attributes</div>
+      <h3>Input Validation</h3>
+      <table class="attr-table">
+        <tr><th>Attribute</th><th>Example</th></tr>
+        <tr><td>required</td><td>Must be filled</td></tr>
+        <tr><td>minlength</td><td>minlength="3"</td></tr>
+        <tr><td>maxlength</td><td>maxlength="100"</td></tr>
+        <tr><td>min</td><td>min="0"</td></tr>
+        <tr><td>max</td><td>max="99"</td></tr>
+        <tr><td>step</td><td>step="0.5"</td></tr>
+        <tr><td>pattern</td><td>pattern="[A-Za-z]+"</td></tr>
+        <tr><td>disabled</td><td>Not interactive</td></tr>
+        <tr><td>readonly</td><td>Cannot be edited</td></tr>
+        <tr><td>multiple</td><td>Multiple file/email</td></tr>
+        <tr><td>autofocus</td><td>Auto-focuses on load</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ── 09 SEMANTIC HTML ────────────────────────────── -->
+<section class="section" id="semantic">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">09 /</span>
+    <h2 class="section-title">Semantic <span>HTML5</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card card-accent2">
+      <div class="card-label">page layout elements</div>
+      <h3>Structural / Sectioning</h3>
+      <table class="attr-table">
+        <tr><th>Tag</th><th>Purpose</th></tr>
+        <tr><td>&lt;header&gt;</td><td>Page or section header</td></tr>
+        <tr><td>&lt;nav&gt;</td><td>Navigation links</td></tr>
+        <tr><td>&lt;main&gt;</td><td>Primary page content (once per page)</td></tr>
+        <tr><td>&lt;article&gt;</td><td>Self-contained content (blog post)</td></tr>
+        <tr><td>&lt;section&gt;</td><td>Thematic grouping with heading</td></tr>
+        <tr><td>&lt;aside&gt;</td><td>Sidebar / tangentially related</td></tr>
+        <tr><td>&lt;footer&gt;</td><td>Page or section footer</td></tr>
+        <tr><td>&lt;figure&gt;</td><td>Self-contained figure + figcaption</td></tr>
+        <tr><td>&lt;details&gt;</td><td>Disclosure widget (accordion)</td></tr>
+        <tr><td>&lt;summary&gt;</td><td>Visible heading of &lt;details&gt;</td></tr>
+        <tr><td>&lt;dialog&gt;</td><td>Modal or popup window</td></tr>
+        <tr><td>&lt;time&gt;</td><td>Date/time with datetime attr</td></tr>
+        <tr><td>&lt;mark&gt;</td><td>Highlighted / relevant text</td></tr>
+      </table>
+    </div>
+    <div class="card card-accent">
+      <div class="card-label">layout example</div>
+      <h3>Semantic Page Structure</h3>
+      <pre><span class="tag">&lt;body&gt;</span>
+  <span class="tag">&lt;header&gt;</span>
+    <span class="tag">&lt;nav&gt;</span>...<span class="tag">&lt;/nav&gt;</span>
+  <span class="tag">&lt;/header&gt;</span>
+
+  <span class="tag">&lt;main&gt;</span>
+    <span class="tag">&lt;article&gt;</span>
+      <span class="tag">&lt;h1&gt;</span>Title<span class="tag">&lt;/h1&gt;</span>
+      <span class="tag">&lt;section&gt;</span>
+        <span class="tag">&lt;h2&gt;</span>Chapter<span class="tag">&lt;/h2&gt;</span>
+        <span class="tag">&lt;p&gt;</span>Content...<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;/section&gt;</span>
+    <span class="tag">&lt;/article&gt;</span>
+
+    <span class="tag">&lt;aside&gt;</span>
+      Related links...
+    <span class="tag">&lt;/aside&gt;</span>
+  <span class="tag">&lt;/main&gt;</span>
+
+  <span class="tag">&lt;footer&gt;</span>
+    <span class="tag">&lt;p&gt;</span>&copy; 2025<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;/footer&gt;</span>
+<span class="tag">&lt;/body&gt;</span></pre>
+    </div>
+    <div class="card card-accent3">
+      <div class="card-label">details & dialog</div>
+      <h3>Interactive Elements</h3>
+      <pre><span class="com">&lt;!-- Accordion --&gt;</span>
+<span class="tag">&lt;details&gt;</span>
+  <span class="tag">&lt;summary&gt;</span>Click to expand<span class="tag">&lt;/summary&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Hidden content here<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/details&gt;</span>
+
+<span class="com">&lt;!-- Native Modal --&gt;</span>
+<span class="tag">&lt;dialog</span> <span class="attr">id</span>=<span class="val">"myModal"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Modal content<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;button</span>
+    <span class="attr">onclick</span>=<span class="val">"this.closest('dialog').close()"</span>
+  <span class="tag">&gt;</span>Close<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/dialog&gt;</span>
+<span class="tag">&lt;button</span>
+  <span class="attr">onclick</span>=<span class="val">"myModal.showModal()"</span><span class="tag">&gt;</span>
+  Open Modal
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="com">&lt;!-- Progress bar --&gt;</span>
+<span class="tag">&lt;progress</span> <span class="attr">value</span>=<span class="val">"70"</span> <span class="attr">max</span>=<span class="val">"100"</span><span class="tag">&gt;&lt;/progress&gt;</span>
+
+<span class="com">&lt;!-- Meter --&gt;</span>
+<span class="tag">&lt;meter</span> <span class="attr">value</span>=<span class="val">"0.7"</span> <span class="attr">min</span>=<span class="val">"0"</span> <span class="attr">max</span>=<span class="val">"1"</span>
+       <span class="attr">low</span>=<span class="val">"0.25"</span> <span class="attr">high</span>=<span class="val">"0.75"</span><span class="tag">&gt;
+&lt;/meter&gt;</span></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ── 10 META & SEO ───────────────────────────────── -->
+<section class="section" id="meta">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">10 /</span>
+    <h2 class="section-title">Meta, SEO &amp; <span>OG Tags</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card card-accent4">
+      <div class="card-label">essential meta</div>
+      <h3>SEO + Social Meta Tags</h3>
+      <pre><span class="com">&lt;!-- Core --&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"description"</span>
+      <span class="attr">content</span>=<span class="val">"Page description"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"robots"</span>
+      <span class="attr">content</span>=<span class="val">"index, follow"</span><span class="tag">&gt;</span>
+
+<span class="com">&lt;!-- Open Graph (Facebook/LinkedIn) --&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:title"</span>
+      <span class="attr">content</span>=<span class="val">"Title"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:description"</span>
+      <span class="attr">content</span>=<span class="val">"Desc"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:image"</span>
+      <span class="attr">content</span>=<span class="val">"img.png"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:url"</span>
+      <span class="attr">content</span>=<span class="val">"https://..."</span><span class="tag">&gt;</span>
+
+<span class="com">&lt;!-- Twitter Card --&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"twitter:card"</span>
+      <span class="attr">content</span>=<span class="val">"summary_large_image"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"twitter:creator"</span>
+      <span class="attr">content</span>=<span class="val">"@handle"</span><span class="tag">&gt;</span>
+
+<span class="com">&lt;!-- Favicon --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"icon"</span>
+      <span class="attr">href</span>=<span class="val">"/favicon.ico"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"apple-touch-icon"</span>
+      <span class="attr">href</span>=<span class="val">"/apple-icon.png"</span><span class="tag">&gt;</span>
+
+<span class="com">&lt;!-- Canonical URL --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"canonical"</span>
+      <span class="attr">href</span>=<span class="val">"https://yoursite.com/page"</span><span class="tag">&gt;</span></pre>
+    </div>
+    <div class="card card-accent5">
+      <div class="card-label">performance</div>
+      <h3>Resource Hints</h3>
+      <pre><span class="com">&lt;!-- Preload critical resources --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"preload"</span>
+      <span class="attr">href</span>=<span class="val">"font.woff2"</span>
+      <span class="attr">as</span>=<span class="val">"font"</span>
+      <span class="attr">crossorigin</span><span class="tag">&gt;</span>
+
+<span class="com">&lt;!-- Prefetch next page --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"prefetch"</span>
+      <span class="attr">href</span>=<span class="val">"/next-page"</span><span class="tag">&gt;</span>
+
+<span class="com">&lt;!-- DNS prefetch --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"dns-prefetch"</span>
+      <span class="attr">href</span>=<span class="val">"//fonts.googleapis.com"</span><span class="tag">&gt;</span>
+
+<span class="com">&lt;!-- Script loading strategies --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"app.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="com">&lt;!-- defer: runs after HTML parsed --&gt;</span>
+
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"widget.js"</span> <span class="attr">async</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="com">&lt;!-- async: runs as soon as loaded --&gt;</span>
+
+<span class="com">&lt;!-- Module script --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">type</span>=<span class="val">"module"</span> <span class="attr">src</span>=<span class="val">"main.js"</span><span class="tag">&gt;
+&lt;/script&gt;</span></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ── 11 GLOBAL ATTRIBUTES ───────────────────────── -->
+<section class="section" id="attributes">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">11 /</span>
+    <h2 class="section-title">Global <span>Attributes</span></h2>
+  </div>
+  <div class="grid grid-3">
+    <div class="card card-accent">
+      <div class="card-label">core globals</div>
+      <h3>Universal Attributes</h3>
+      <table class="attr-table">
+        <tr><th>Attr</th><th>Purpose</th></tr>
+        <tr><td>id</td><td>Unique identifier</td></tr>
+        <tr><td>class</td><td>CSS class name(s)</td></tr>
+        <tr><td>style</td><td>Inline CSS</td></tr>
+        <tr><td>title</td><td>Tooltip on hover</td></tr>
+        <tr><td>hidden</td><td>Hides element (but in DOM)</td></tr>
+        <tr><td>tabindex</td><td>Tab order (0, -1, 1+)</td></tr>
+        <tr><td>lang</td><td>Language code (en, fr…)</td></tr>
+        <tr><td>dir</td><td>ltr / rtl / auto</td></tr>
+        <tr><td>translate</td><td>yes / no for translation</td></tr>
+        <tr><td>spellcheck</td><td>true / false</td></tr>
+        <tr><td>contenteditable</td><td>Makes element editable</td></tr>
+        <tr><td>draggable</td><td>true / false</td></tr>
+      </table>
+    </div>
+    <div class="card card-accent3">
+      <div class="card-label">data attributes</div>
+      <h3>Custom data-* Attributes</h3>
+      <pre><span class="com">&lt;!-- Store custom data --&gt;</span>
+<span class="tag">&lt;button</span>
+  <span class="attr">data-user-id</span>=<span class="val">"42"</span>
+  <span class="attr">data-action</span>=<span class="val">"delete"</span><span class="tag">&gt;</span>
+  Delete
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="com">// Access in JS:</span>
+<span class="txt">const btn = document.querySelector('button');
+btn.dataset.userId;  </span><span class="com">// "42"</span>
+<span class="txt">btn.dataset.action;  </span><span class="com">// "delete"</span>
+
+<span class="com">// CSS access:</span>
+<span class="txt">content: attr(data-action);</span></pre>
+    </div>
+    <div class="card card-accent2">
+      <div class="card-label">accessibility (aria)</div>
+      <h3>ARIA Attributes</h3>
+      <table class="attr-table">
+        <tr><th>Attribute</th><th>Usage</th></tr>
+        <tr><td>aria-label</td><td>Accessible name</td></tr>
+        <tr><td>aria-labelledby</td><td>Points to label element</td></tr>
+        <tr><td>aria-describedby</td><td>Points to description</td></tr>
+        <tr><td>aria-hidden</td><td>Hide from screen readers</td></tr>
+        <tr><td>aria-expanded</td><td>Open/closed state</td></tr>
+        <tr><td>aria-controls</td><td>Controls another element</td></tr>
+        <tr><td>aria-live</td><td>Announce dynamic content</td></tr>
+        <tr><td>role</td><td>Semantic role override</td></tr>
+        <tr><td>aria-required</td><td>Required field</td></tr>
+        <tr><td>aria-invalid</td><td>Validation error</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ── 12 MISC ─────────────────────────────────────── -->
+<section class="section" id="misc">
+<div class="container">
+  <div class="section-header">
+    <span class="section-num">12 /</span>
+    <h2 class="section-title">Special &amp; <span>Misc</span></h2>
+  </div>
+  <div class="grid grid-3">
+    <div class="card card-accent">
+      <div class="card-label">character entities</div>
+      <h3>HTML Entities</h3>
+      <table class="attr-table">
+        <tr><th>Entity</th><th>Character</th></tr>
+        <tr><td>&amp;amp;</td><td>&amp;</td></tr>
+        <tr><td>&amp;lt;</td><td>&lt;</td></tr>
+        <tr><td>&amp;gt;</td><td>&gt;</td></tr>
+        <tr><td>&amp;quot;</td><td>"</td></tr>
+        <tr><td>&amp;apos;</td><td>'</td></tr>
+        <tr><td>&amp;nbsp;</td><td>non-breaking space</td></tr>
+        <tr><td>&amp;copy;</td><td>&copy;</td></tr>
+        <tr><td>&amp;reg;</td><td>&reg;</td></tr>
+        <tr><td>&amp;trade;</td><td>&trade;</td></tr>
+        <tr><td>&amp;mdash;</td><td>&mdash;</td></tr>
+        <tr><td>&amp;ndash;</td><td>&ndash;</td></tr>
+        <tr><td>&amp;hellip;</td><td>&hellip;</td></tr>
+      </table>
+    </div>
+    <div class="card card-accent5">
+      <div class="card-label">containers</div>
+      <h3>div vs span</h3>
+      <pre><span class="com">&lt;!-- Block container --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"wrapper"</span><span class="tag">&gt;</span>
+  Block-level element.
+  Creates a new line.
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="com">&lt;!-- Inline container --&gt;</span>
+<span class="tag">&lt;p&gt;</span>
+  Text with
+  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"highlight"</span><span class="tag">&gt;</span>
+    inline span
+  <span class="tag">&lt;/span&gt;</span>
+  inside paragraph.
+<span class="tag">&lt;/p&gt;</span>
+
+<span class="com">&lt;!-- Template (inert clone) --&gt;</span>
+<span class="tag">&lt;template</span> <span class="attr">id</span>=<span class="val">"card-tpl"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"card"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/template&gt;</span></pre>
+    </div>
+    <div class="card card-accent4">
+      <div class="card-label">svg & canvas</div>
+      <h3>Inline SVG &amp; Canvas</h3>
+      <pre><span class="com">&lt;!-- Inline SVG --&gt;</span>
+<span class="tag">&lt;svg</span> <span class="attr">viewBox</span>=<span class="val">"0 0 100 100"</span>
+     <span class="attr">xmlns</span>=<span class="val">"http://www.w3.org/2000/svg"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;circle</span>
+    <span class="attr">cx</span>=<span class="val">"50"</span> <span class="attr">cy</span>=<span class="val">"50"</span> <span class="attr">r</span>=<span class="val">"40"</span>
+    <span class="attr">fill</span>=<span class="val">"#ff6b35"</span><span class="tag">/&gt;</span>
+<span class="tag">&lt;/svg&gt;</span>
+
+<span class="com">&lt;!-- Canvas (JS rendering) --&gt;</span>
+<span class="tag">&lt;canvas</span>
+  <span class="attr">id</span>=<span class="val">"myCanvas"</span>
+  <span class="attr">width</span>=<span class="val">"400"</span>
+  <span class="attr">height</span>=<span class="val">"300"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/canvas&gt;</span>
+<span class="tag">&lt;script&gt;</span>
+<span class="txt">const ctx =
+  myCanvas.getContext('2d');
+ctx.fillStyle = '#ff6b35';
+ctx.fillRect(0,0,200,200);</span>
+<span class="tag">&lt;/script&gt;</span></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer>
+  Built for developers · <span>&lt;HTML/&gt;</span> Ultimate Cheat Sheet · 2025
+</footer>
+
+</body>
+</html>
